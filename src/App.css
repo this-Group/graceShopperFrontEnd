@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,12 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+
+
+.product-card {
+  border: solid;
+  padding: 5px;
+  margin: 5px;
 }
