@@ -1,8 +1,8 @@
 // import logo from './logo.svg';
 import { useEffect, useState } from 'react';
-// import { Route, Link, Switch } from 'react-router-dom';
-// import AllProductsView from './AllProductsView';
-// import SingleRecordView from './SingleRecordView';
+import { Route, Link, Switch } from 'react-router-dom';
+import AllProductsView from './AllProductsView';
+import SingleProductView from './SingleProductView';
 import '../App.css';
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
   }
 
   const [products, setProducts] = useState([]);
+  
 
   useEffect(() => {
     fetchProducts()
@@ -33,7 +34,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div>
-          <a className="App-link" href="http://localhost:3000/" target="_blank" rel="noopener noreferrer">
+          <a className="App-link" href="http://localhost:3000/" rel="noopener noreferrer">
             this.Group Records
           </a>
         </div>
@@ -44,10 +45,10 @@ function App() {
         </div>
       </header>
 
-      <body>
+      <div>
         <div>
           <div className="header-links">
-            {/* <Link to="/AllProductsView">All Records</Link> */}
+            <Link to="/AllProductsView">All Records</Link>
           </div>
           <h2> Genre Links</h2>
           {/* <Link to Genre />
@@ -56,35 +57,17 @@ function App() {
         </div>
         <div>
           <h1>Welcome Listener</h1>
-          {/* <Switch>
+          <Switch>
             <Route path="/AllProductsView" component={AllProductsView} />
-            <Route path="/SingleProductView" component={SingleProductView} />
-          </Switch> */}
+            <Route path="/SingleProductView" component={SingleProductView} /*product={product}*//>
+          </Switch>
 
 
 
 
-          {products.map((product) => {
-            return <div className="product-card" key={product.id}>
-              <div>
-                <img src={product.picture} alt={product.title}></img>
-                <p>Price: {product.price}</p>
-              </div>
-              <div>
-                <p>Title: {product.title}</p>
-                <p>Artist: {product.artist}</p>
-                <p>Genre: {product.genre}</p>
-              </div>
-              <div>
-                {/* <Link to single product view /> */}
-                <button /*onClick={addToCart(product.id)}*/>Add to Cart</button>
-              </div>
-
-            </div>
-
-          })}
+          
         </div>
-      </body>
+      </div>
     </div>
   );
 }
