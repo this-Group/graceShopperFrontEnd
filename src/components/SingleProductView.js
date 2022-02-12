@@ -1,54 +1,59 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 
 function SingleProductView(props) {
-  console.log('These are the single product props', props)
-  const fetchSingleProduct = async () => {
+  console.log('These are the props passed to SingleProductView', props)
+  const { products } = props;
+  console.log('These are the products from the SingleProductView props', products)
 
-    const { product } = props
-    try {
+  const { id } = useParams();
+  console.log('This is id from useParams', id);
 
-      const response = await fetch(`http://localhost:4000/api/products/${product.id}`, {
-        mode: "cors"
-      })
-      const data = await response.json();
-      console.log('I am the single product data', data)
-      setSingleProduct(data);
-
-      return data
-    } catch (error) {
-      console.error(error)
-    }
-  };
-
-  const [singleProduct, setSingleProduct] = useState([]);
-
-  useEffect(() => {
-    fetchSingleProduct()
-  }, []);
+  let singleProduct = products.find(product => {
+    return product.id === parseInt(id)
+  });
+  console.log('This is the singleProduct for', id, singleProduct)
 
   return (
+    <div className="product-card">
+      <img src={
+        singleProduct && singleProduct.picture ?
+          singleProduct.picture : ''
+      } alt={
+        singleProduct && singleProduct.title ?
+          singleProduct.title : ''
+      }></img>
 
+      <p>Price: {
+        singleProduct && singleProduct.price ?
+          singleProduct.price : ''
+      }
+      </p>
 
-    <div className="product-card" key={singleProduct.id}>
-      <div>
-        <img src={singleProduct.picture} alt={singleProduct.title}></img>
-        <p>Price: {singleProduct.price}</p>
-      </div>
-      <div>
-        <p>Title: {singleProduct.title}</p>
-        <p>Artist: {singleProduct.artist}</p>
-        <p>Genre: {singleProduct.genre}</p>
-      </div>
+      <p>Title: {
+        singleProduct && singleProduct.title ?
+          singleProduct.title : ''
+      }
+      </p>
+
+      <p>Artist: {
+        singleProduct && singleProduct.artist ?
+          singleProduct.artist : ''
+      }
+      </p>
+
+      <p>Genre: {
+        singleProduct && singleProduct.genre ?
+          singleProduct.genre : ''
+      }
+      </p>
+
       <div>
         <button /*onClick={addToCart(singleProduct.id)}*/>Add to Cart</button>
       </div>
-
     </div>
-
-
-
   )
 
 }
 
-export default SingleProductView
+export default SingleProductView;
