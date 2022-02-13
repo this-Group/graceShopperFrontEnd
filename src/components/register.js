@@ -4,8 +4,7 @@ import ReactDom from "react-dom";
 import { useState } from "react";
 
 // const {createUser} = require('../../db/users');
-import React from "react";
-import reactDom from "react-dom";
+
 
 
 
@@ -41,8 +40,8 @@ const Register = () => {
     return (
         <div>
             <form onSubmit={handleSubmit} className="registerForm">
-                <input type = "text" placeholder = "New Username" value = {username} onChange={(event) => setUsername(event.target.value)}></input>
-                <input type = "text" placeholder = "New Password" value = {password} onChange={(event) => setPassword(event.target.value)}></input>
+                <input type = "text" placeholder = "New Username" value = {username} onChange={(event) => setUsername(event.target.value)}></input><br></br>
+                <input type = "text" placeholder = "New Password" value = {password} onChange={(event) => setPassword(event.target.value)}></input><br></br>
                 <button type = "submit" className="button">
                     Create New Account
                 </button>

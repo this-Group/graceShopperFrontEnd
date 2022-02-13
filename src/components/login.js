@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     // useEffect(() => {
     //     if (localStorage.getItem("token")) {
@@ -27,27 +27,27 @@ const Login = () => {
         //question about fetching from our backend
         const loginUser = async (username, password) => {
             try {
-                const response = await fetch('http:localhost:4000/api/login' , {
+                const response = await fetch('http:localhost:4000/api/login', {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                    
-                            username: username,
-                            password: password
-                        
+
+                        username: username,
+                        password: password
+
                     })
                 })
-
-                if (response){
-                    const { data : {token}}= await response.json();
+                console.log("this is the response from loginuser", response)
+                if (response) {
+                    const { data: { token } } = await response.json();
                     localStorage.setItem("token", token)
-                    // setUsername('');
-                    // setPassword('');    
+                    setIsLoggedIn(true)
+
                 }
             } catch (error) {
-                console.log(err);
+                console.error(error);
             }
         }
         loginUser(username, password)
@@ -66,27 +66,39 @@ const Login = () => {
         //     })
         // })
 
-        
+
     }
 
-    return(
+    return (
         <div className="loginUserForm">
-            {
-                !isLoggedIn
-            ?
-            <>
             <form onSubmit={handleSubmit}>
-            <label>Username</label>
-            <input type= "text" value={username} placeholder="Enter username" onChange={(event) => setUsername(event.targe.value)}> </input> <br></br> 
-            
-            <label>Password</label>
-            <input type= "text" value={password} placeholder="Enter password" onChange={(event) = setPassword(event.targe.value)}> </input> <br></br> 
 
-            <button type="submit" className="button">Login</button>
-            </form></>
-            :
-            null
-    }
+                <h2>Log In</h2>
+
+                <input type='text' placeholder='Username' value={username} onChange={(event) => setUsername(event.target.value)}>
+                </input>
+                <br></br>
+                <br></br>
+                <input type='text' placeholder='Password' value={password} onChange={(event) => setPassword(event.target.value)}>
+                </input>
+                <br></br>
+                <br></br>
+                <button type='submit'>
+                    Log In
+                </button>
+            </form>
+
+            {/* <form onSubmit={handleSubmit}>
+            <label>Username</label>
+            <input type= "text" value={username} placeholder="Enter username" onChange={(event) => setUsername(event.target.value)}> </input> <br></br> 
+            
+            {/* <label>Password</label>
+            <input type= "text" value={password} placeholder="Enter password" onChange={(event) = setPassword(event.target.value)}> </input> <br></br>  */}
+
+            {/* <button type="submit" className="button">Login</button>
+            </form> */}
+
+
 
         </div>
     )
