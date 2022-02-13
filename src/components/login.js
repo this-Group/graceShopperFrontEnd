@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
+// import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { useEffect, useState } from "react";
 
 // const {loginUser} = require('../../db/users');
@@ -72,7 +72,7 @@ const Login = () => {
     return(
         <div className="loginUserForm">
             {
-                isLoggedIn
+                !isLoggedIn
             ?
             <>
             <form onSubmit={handleSubmit}>
