@@ -63,6 +63,9 @@ function App() {
             <Route path="/:id">
               <SingleProductView products={products} />
             </Route>
+            {/* <Route path="/login">
+              <Login  />
+            </Route> */}
           </Switch>
 
 
