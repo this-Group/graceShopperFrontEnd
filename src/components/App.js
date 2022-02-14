@@ -22,12 +22,13 @@ function App() {
     }
   }
 
-  const [products, setProducts] = useState([]);
   
-
   useEffect(() => {
     fetchProducts()
   }, []);
+
+  const [products, setProducts] = useState([]);
+  
 
 
   return (
@@ -47,9 +48,7 @@ function App() {
 
       <div>
         <div>
-          <div className="header-links">
-            <Link to="/AllProductsView">All Records</Link>
-          </div>
+          
           <h2> Genre Links</h2>
           {/* <Link to Genre />
           <Link to Genre />
@@ -58,8 +57,15 @@ function App() {
         <div>
           <h1>Welcome Listener</h1>
           <Switch>
-            <Route path="/AllProductsView" component={AllProductsView} />
-            <Route path="/SingleProductView" component={SingleProductView} /*product={product}*//>
+            <Route exact path="/">
+              <AllProductsView products={products} />
+            </Route>
+            <Route path="/:id">
+              <SingleProductView products={products} />
+            </Route>
+            {/* <Route path="/login">
+              <Login  />
+            </Route> */}
           </Switch>
 
 
