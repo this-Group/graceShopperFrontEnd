@@ -12,7 +12,8 @@ import Basket from './Basket';
 function App() {
   // const [guestCart, setGuestCart] = useState([]);
   // const [totalItemNumber, setTotalItemNumber] = useState(0);
-
+  // const [user,setUser]= useState(null)
+  const [cartItems, setCartItems] = useState([])
   const fetchProducts = async () => {
     try {
 
@@ -32,10 +33,21 @@ function App() {
   
   useEffect(() => {
     fetchProducts()
+    setCartItems(JSON.parse(localStorage.cartItems))
+    console.log(JSON.parse(localStorage.getItem("cartItems")))
   }, []);
 
-  const [cartItems, setCartItems] = useState([])
+  useEffect(()=>{
+    const _cartItems = JSON.stringify(cartItems)
+    localStorage.setItem("cartItems", _cartItems);
+  },[cartItems]
+  )
   const onAdd = (product) => {
+
+
+    // if(user){
+
+    
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist) {
       setCartItems(
@@ -46,6 +58,7 @@ function App() {
     } else {
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
+  // }
   };
 
   // select product that needs to be removed
