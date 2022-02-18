@@ -4,9 +4,20 @@ import { Route, Link, Switch } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import '../App.css';
+
+// import GuestCart from './GuestCart';
+import Header from './Header';
+import Main from './Main';
+import Basket from './Basket';
+
 import Register from './register';
 
+
 function App() {
+  // const [guestCart, setGuestCart] = useState([]);
+  // const [totalItemNumber, setTotalItemNumber] = useState(0);
+  // const [user,setUser]= useState(null)
+  const [cartItems, setCartItems] = useState([])
   const fetchProducts = async () => {
     try {
 
@@ -26,9 +37,54 @@ function App() {
   
   useEffect(() => {
     fetchProducts()
+    setCartItems(JSON.parse(localStorage.cartItems))
+    console.log(JSON.parse(localStorage.getItem("cartItems")))
   }, []);
 
+
+  useEffect(()=>{
+    const _cartItems = JSON.stringify(cartItems)
+    localStorage.setItem("cartItems", _cartItems);
+  },[cartItems]
+  )
+  const onAdd = (product) => {
+
+
+    // if(user){
+
+    
+    const exist = cartItems.find((x) => x.id === product.id);
+    if (exist) {
+      setCartItems(
+        cartItems.map((x) =>
+          x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
+        )
+      );
+    } else {
+      setCartItems([...cartItems, { ...product, qty: 1 }]);
+    }
+  // }
+  };
+
+  // select product that needs to be removed
+  // in the cartItems search for a product with the product.id  
+  const onRemove = (product) => {
+    const exist = cartItems.find((x) => x.id === product.id);
+    // i need to remove this product
+    if (exist.qty === 1) {
+      // if product does not exist cartItems then return
+      setCartItems(cartItems.filter((x) => x.id !== product.id));
+    } else {
+      setCartItems(
+        cartItems.map((x) =>
+          x.id === product.id ? { ...exist, qty: exist.qty - 1 } : x
+        )
+      );
+    }
+  };
+
   const [products, setProducts] = useState([]);
+
   
 
 
@@ -39,6 +95,7 @@ function App() {
           <a className="App-link" href="http://localhost:3000/" rel="noopener noreferrer">
             this.Group Records
           </a>
+          <Header></Header>
         </div>
         <div>
           <Register />
@@ -57,15 +114,24 @@ function App() {
           <Link to Genre /> */}
         </div>
         <div>
-          <h1>Welcome Listener</h1>
+          
           <Switch>
             <Route exact path="/">
               <AllProductsView products={products} />
             </Route>
             <Route path="/:id">
-              <SingleProductView products={products} />
+              <SingleProductView onAdd={onAdd} products={products} />
             </Route>
           </Switch>
+          
+
+        {/* <Main onAdd={onAdd} products={products}></Main> */}
+        <Basket 
+          onAdd={onAdd} 
+          onRemove={onRemove} 
+          cartItems={cartItems}>
+
+        </Basket>
 
 
 
