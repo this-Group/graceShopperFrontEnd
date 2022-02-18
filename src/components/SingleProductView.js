@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 function SingleProductView(props) {
   console.log('These are the props passed to SingleProductView', props)
   const { products, onAdd } = props;
+
   console.log('These are the products from the SingleProductView props', products)
 
   const { id } = useParams();

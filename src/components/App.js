@@ -4,10 +4,14 @@ import { Route, Link, Switch } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import '../App.css';
+
 // import GuestCart from './GuestCart';
 import Header from './Header';
 import Main from './Main';
 import Basket from './Basket';
+
+import Register from './register';
+
 
 function App() {
   // const [guestCart, setGuestCart] = useState([]);
@@ -36,6 +40,7 @@ function App() {
     setCartItems(JSON.parse(localStorage.cartItems))
     console.log(JSON.parse(localStorage.getItem("cartItems")))
   }, []);
+
 
   useEffect(()=>{
     const _cartItems = JSON.stringify(cartItems)
@@ -93,6 +98,7 @@ function App() {
           <Header></Header>
         </div>
         <div>
+          <Register />
           {/* <Link to Sign Up />
           <Link to Login />
           <Link to Cart /> */}
@@ -116,7 +122,6 @@ function App() {
             <Route path="/:id">
               <SingleProductView onAdd={onAdd} products={products} />
             </Route>
-            
           </Switch>
           
 
