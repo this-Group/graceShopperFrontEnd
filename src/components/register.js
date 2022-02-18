@@ -5,7 +5,24 @@ import { useState } from "react";
 
 // const {createUser} = require('../../db/users');
 
-
+const createUser = async (username, password) => {
+    console.log('This is the createUser func');
+    const response = await fetch('https:localhost:4000/api/signup', {
+        method: "POST",
+        headers: {
+            'Content-Type' : 'application/json',
+        },
+        body: {
+            username: username,
+            password: password
+        }
+    });
+    // if (response) {
+    //     const {token } = await response.json();
+    //     localStorage.setItem("token", token)
+    // }
+    return response;
+}
 
 
 const Register = () => {
@@ -14,23 +31,7 @@ const Register = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const createUser = async (username, password) => {
-            const response = await fetch('https:localhost:4000/api/signup', {
-                method: "POST",
-                headers: {
-                    'Content-Type' : 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                })
-            });
-            if (response) {
-                const {token } = await response.json();
-                localStorage.setItem("token", token)
-            }
-            return response;
-        }
+        
         createUser(username, password)
         setUsername('');
         setPassword('');

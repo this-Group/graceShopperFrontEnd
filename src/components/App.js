@@ -4,6 +4,7 @@ import { Route, Link, Switch } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import '../App.css';
+import Register from './register';
 
 function App() {
   const fetchProducts = async () => {
@@ -40,6 +41,7 @@ function App() {
           </a>
         </div>
         <div>
+          <Register />
           {/* <Link to Sign Up />
           <Link to Login />
           <Link to Cart /> */}
