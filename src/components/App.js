@@ -4,6 +4,7 @@ import { Route, Link, Switch } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import '../App.css';
+import Register from './register';
 
 function App() {
   const fetchProducts = async () => {
@@ -22,12 +23,13 @@ function App() {
     }
   }
 
-  const [products, setProducts] = useState([]);
   
-
   useEffect(() => {
     fetchProducts()
   }, []);
+
+  const [products, setProducts] = useState([]);
+  
 
 
   return (
@@ -39,6 +41,7 @@ function App() {
           </a>
         </div>
         <div>
+          <Register />
           {/* <Link to Sign Up />
           <Link to Login />
           <Link to Cart /> */}
@@ -47,9 +50,7 @@ function App() {
 
       <div>
         <div>
-          <div className="header-links">
-            <Link to="/AllProductsView">All Records</Link>
-          </div>
+          
           <h2> Genre Links</h2>
           {/* <Link to Genre />
           <Link to Genre />
@@ -58,8 +59,12 @@ function App() {
         <div>
           <h1>Welcome Listener</h1>
           <Switch>
-            <Route path="/AllProductsView" component={AllProductsView} />
-            <Route path="/SingleProductView" component={SingleProductView} /*product={product}*//>
+            <Route exact path="/">
+              <AllProductsView products={products} />
+            </Route>
+            <Route path="/:id">
+              <SingleProductView products={products} />
+            </Route>
           </Switch>
 
 
