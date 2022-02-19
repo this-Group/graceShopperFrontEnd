@@ -1,7 +1,9 @@
 import React from 'react';
 
 const ProductCard = (props) => {
-    const { product } = props;
+
+    const { product, onAdd } = props;
+
     console.log("this is the product from ProductCard props", product)
 
     const singleProductViewUrl = `http://localhost:3000/` + `${product.id}`
@@ -25,14 +27,12 @@ const ProductCard = (props) => {
                 <p>Artist: {product.artist}</p>
                 <p>Genre: {product.genre}</p>
                 <p>Price: {product.price}</p>
-                <button /*onClick={addToCart(product.id)}*/>Add to Cart</button>
+                <button onClick={() => onAdd(product)}>Add To Cart</button>
             </div>
-            <div>
-                
-            </div>
+            
         </div>
         
     )
 }
 
-export default ProductCard
+export default ProductCard;

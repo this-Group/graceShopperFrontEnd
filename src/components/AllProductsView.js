@@ -7,7 +7,9 @@ import ProductCard from './ProductCard';
 function AllProductView(props) {
     console.log('AllRecordView props', props);
 
-    const { products } = props;
+
+    const { products, onAdd } = props;
+
     console.log('These are the passed down products', products)
     
  
@@ -59,7 +61,9 @@ function AllProductView(props) {
         <div className="albums-collection">
             {
                 products && products.length && products.map((product) =>{
-                    return <ProductCard key={product.id} product={product} />
+
+                    return <ProductCard key={product.id} product={product} onAdd={onAdd} />
+
                 })
             }
 
@@ -88,7 +92,6 @@ function AllProductView(props) {
                             <button onClick={addToCart(product.id)}>Add to Cart</button>
 
                         </div>
-
                     
 
                 })}

@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 
 function SingleProductView(props) {
   console.log('These are the props passed to SingleProductView', props)
-  const { products } = props;
+  const { products, onAdd } = props;
+
   console.log('These are the products from the SingleProductView props', products)
 
   const { id } = useParams();
@@ -49,9 +50,14 @@ function SingleProductView(props) {
           singleProduct.genre : ''
       }
       </p>
+
       </div>
+
+      
+
       <div>
-        <button /*onClick={addToCart(singleProduct.id)}*/>Add to Cart</button>
+        
+      <button onClick={(event) => {onAdd(singleProduct);event.preventDefault()}}>Add To Cart</button>
       </div>
     </div>
   )
