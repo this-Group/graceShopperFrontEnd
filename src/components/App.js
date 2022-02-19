@@ -1,17 +1,16 @@
 // import logo from './logo.svg';
 import { useEffect, useState } from 'react';
-import { Route, Link, Switch } from 'react-router-dom';
+import { Route, Link, Switch, Router } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
-import Register from './register';
+import Register from './Register';
+import Login from './Login';
 import '../App.css';
 
 // import GuestCart from './GuestCart';
 import Header from './Header';
 import Main from './Main';
 import Basket from './Basket';
-
-import Register from './register';
 
 
 function App() {
@@ -35,7 +34,7 @@ function App() {
     }
   }
 
-  
+
   useEffect(() => {
     fetchProducts()
     setCartItems(JSON.parse(localStorage.cartItems))
@@ -43,17 +42,17 @@ function App() {
   }, []);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const _cartItems = JSON.stringify(cartItems)
     localStorage.setItem("cartItems", _cartItems);
-  },[cartItems]
+  }, [cartItems]
   )
   const onAdd = (product) => {
 
 
     // if(user){
 
-    
+
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist) {
       setCartItems(
@@ -64,7 +63,7 @@ function App() {
     } else {
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
-  // }
+    // }
   };
 
   // select product that needs to be removed
@@ -86,7 +85,7 @@ function App() {
 
   const [products, setProducts] = useState([]);
 
-  
+
 
 
   return (
@@ -100,60 +99,61 @@ function App() {
           {/* <img className="album-cover" src="this.group_records@300x.png" alt="this.Group Records"></img> */}
         </div>
         <div className="header-right">
-        <Link to="/signup">Sign Up</Link>
-        <br></br>
-        <Link to="/login">Login</Link>
-
-          <Header></Header>
-        </div>
-
-        </div>
-      </header>
-
-      <div className="main">
-        <div className="side-bar"> 
-          <Link className="side-bar-content" to="/">All Records</Link>
+          {/* <Router> */}
+          <Link to="/user/signup">Sign Up</Link>
           <br></br>
-          <Link className="side-bar-content">Cart</Link>
+          <Link to="/users/login">Login</Link>
+          {/* </Router> */}
+
+
+          {/* <Header></Header> */}
         </div>
-        <div>
-          {/* <h2> Genre Links</h2> */}
-          {/* <Link to Genre />
-          <Link to Genre />
-          <Link to Genre /> */}
-        </div>
+        
+      </header>
+    
+      
+
+    <div className="main">
+      <div className="side-bar">
+        <Link className="side-bar-content" to="/">All Records</Link>
+        <br></br>
+        <Link className="side-bar-content">Cart</Link>
+      </div>
 
      
-        <div>
-          <Switch>
 
-            <Route exact path="/">
-              <AllProductsView products={products} />
-            </Route>
-            <Route path="/:id">
-              <SingleProductView onAdd={onAdd} products={products} />
-            </Route>
-            <Route path="/signup">
+
+      <div>
+        <Switch>
+
+          <Route exact path="/">
+            <AllProductsView products={products} />
+          </Route>
+          <Route path="/:id">
+            <SingleProductView onAdd={onAdd} products={products} />
+          </Route>
+          <Route path="/user/signup">
             <Register />
-            </Route>
-            {/* <Route path="/login">
-              <Login  />
-            </Route> */}
-          </Switch>
-          
+          </Route>
+          <Route path="/users/login">
+            <Login />
+          </Route>
+        </Switch>
 
-        {/* <Main onAdd={onAdd} products={products}></Main> */}
-        <Basket 
-          onAdd={onAdd} 
-          onRemove={onRemove} 
+
+        {/* <div>
+        <Basket
+          onAdd={onAdd}
+          onRemove={onRemove}
           cartItems={cartItems}>
-
         </Basket>
+        </div> */}
 
-        </div>
       </div>
+      </div>
+      </div>
+    
       
-    </div>
   );
 }
 
