@@ -16,7 +16,8 @@ function SingleProductView(props) {
 
   return (
     <div className="product-card">
-      <img src={
+      <div>
+      <img className="album-cover" src={
         singleProduct && singleProduct.picture ?
           singleProduct.picture : ''
       } alt={
@@ -29,7 +30,8 @@ function SingleProductView(props) {
           singleProduct.price : ''
       }
       </p>
-
+      </div>
+      <div>
       <p>Title: {
         singleProduct && singleProduct.title ?
           singleProduct.title : ''
@@ -47,7 +49,7 @@ function SingleProductView(props) {
           singleProduct.genre : ''
       }
       </p>
-
+      </div>
       <div>
         <button /*onClick={addToCart(singleProduct.id)}*/>Add to Cart</button>
       </div>

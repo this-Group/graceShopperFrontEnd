@@ -11,24 +11,41 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+} */
+body{ 
+  background-color: #f4c754;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  overflow-wrap: break-word;
+  color: #1f140f;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: row;
+  align-items:center;
+  justify-content: space-between;
+  font-size: calc(15px + 2vmin);
+  color: rgb(130, 11, 11);
+  background-color: #f4c754;
+  border-bottom: double 10px #43291c;
+  margin-bottom: 5px;
+  
 }
 
-.App-link {
+.header-right{
+  display: flex;
+  justify-content: space-around;
+  width: 30%;
+  font-size: 60%;
+
+}
+
+/* .App-link {
   color: #61dafb;
-}
+} */
 
-@keyframes App-logo-spin {
+/* @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
@@ -37,10 +54,75 @@
   }
 } */
 
+.main{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  background-color: #afe7f2;
+  border-radius: 8px;
+  
+}
 
+.side-bar{
+  /* display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap; */
+  
+  min-width: 20%;
+  font-size: 3vw;
+  background-color: #df7746;
+  border-radius: 8px;
+  
+  
+}
+.side-bar-content{
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  padding-left: 1%;
+  padding-top: 20px;
+  
+}
+
+.albums-collection{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  
+}
 
 .product-card {
-  border: solid;
+  display:flex;
+  flex-direction: column;
+  border: solid 2px #43291c;
+  justify-content: center;
   padding: 5px;
   margin: 5px;
+  font-size: 75%;
+  overflow-wrap: break-word;
+  border-radius: 8px;
+  background-color: #4298AE;
+}
+
+.album-cover{
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+  border: solid 2px #43291c;
+}
+
+
+a:link {
+  color: #43291c;
+}
+
+
+a:visited {
+  color: #431c1c;
+}
+
+
+a:hover {
+  color: #881818;
 }
