@@ -58,7 +58,7 @@ function AllProductView(props) {
 
 
     return (
-        <div>
+        <div className="albums-collection">
             {
                 products && products.length && products.map((product) =>{
 

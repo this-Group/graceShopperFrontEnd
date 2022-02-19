@@ -7,16 +7,33 @@ import { useState } from "react";
 
 const createUser = async (username, password) => {
     console.log('This is the createUser func');
-    const response = await fetch('https:localhost:4000/api/signup', {
+
+    console.log("new username and password", username, password)
+    
+    const response = await fetch('http:localhost:4000/api/users/signup', {
+        
+
+//     const response = await fetch('https:localhost:4000/api/signup', {
+
         method: "POST",
         headers: {
             'Content-Type' : 'application/json',
         },
-        body: {
+
+        body: JSON.stringify({
             username: username,
             password: password
-        }
+        }),
+        mode: "cors",
     });
+    console.log("this is the response", response)
+
+//         body: {
+//             username: username,
+//             password: password
+//         }
+//     });
+
     // if (response) {
     //     const {token } = await response.json();
     //     localStorage.setItem("token", token)
@@ -31,6 +48,9 @@ const Register = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        console.log("From handleSumbit for register", username, password)
+
         
         createUser(username, password)
         setUsername('');
