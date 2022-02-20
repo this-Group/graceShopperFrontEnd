@@ -21,6 +21,12 @@ function App() {
   // const [totalItemNumber, setTotalItemNumber] = useState(0);
   // const [user,setUser]= useState(null)
   const [cartItems, setCartItems] = useState([])
+  const [user , setUser]= useState(null);
+
+
+  useEffect(()=>{
+    console.log(user);
+  },[user])
   const fetchProducts = async () => {
     try {
 
@@ -45,11 +51,13 @@ function App() {
   }, []);
 
 
-  // useEffect(()=>{
-  //   const _cartItems = JSON.stringify(cartItems)
-  //   localStorage.setItem("cartItems", _cartItems);
-  // },[cartItems]
-  // )
+  async function sendCart(){
+
+  }
+
+  useEffect(()=>{}
+ 
+  )
   const onAdd = (product) => {
 
 
@@ -58,14 +66,20 @@ function App() {
 
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist) {
+
+
+      //post request
       setCartItems(
         cartItems.map((x) =>
           x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
         )
       );
     } else {
+      //post request
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
+
+
     // }
   };
 
@@ -133,10 +147,10 @@ function App() {
               <SingleProductView onAdd={onAdd} products={products} />
             </Route>
             <Route exact path="/users/signup">
-              <Register />
+              <Register user={user} setUser = {setUser}/>
             </Route>
             <Route exact path="/users/login">
-              <Login />
+              <Login user={user} setUser={setUser}/>
             </Route>
             <Route exact path="/orders/cart">
               <Basket

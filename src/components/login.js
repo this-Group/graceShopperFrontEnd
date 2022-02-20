@@ -7,7 +7,7 @@ const locallySourcedToken = localStorage.getItem('token');
 
 
 
-const Login = () => {
+const Login = ({ setUser}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,7 +27,7 @@ const Login = () => {
         //question about fetching from our backend
         const loginUser = async (username, password) => {
             try {
-                const response = await fetch('http:localhost:4000/api/login', {
+                const response = await fetch('http://localhost:4000/api/users/login', {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
@@ -41,10 +41,10 @@ const Login = () => {
                 })
                 console.log("this is the response from loginuser", response)
                 if (response) {
-                    const { data: { token } } = await response.json();
+                    const {  token, user  } = await response.json();
                     localStorage.setItem("token", token)
                     setIsLoggedIn(true)
-
+                    setUser(user);
                 }
             } catch (error) {
                 console.error(error);
