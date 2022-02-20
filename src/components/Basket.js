@@ -8,13 +8,15 @@ export default function Basket(props) {
     // const shippingPrice = itemsPrice > 2000 ? 0 : 50;
     const totalPrice = itemsPrice + shippingPrice
     return (
-        <aside className="block col-1">
+      <div>
+        
       <h2>Cart Items</h2>
       <div>
         {cartItems.length === 0 && <div>Cart is empty</div>}
         {cartItems.map((item) => (
           <div key={item.id} className="row">
             <div className="col-2">{item.picture}</div>
+            <img className="album-cover" src={item.picture} alt={item.title}></img>
             <div className="col-2">{item.title} --- {item.artist}</div>
 
             <div className="col-2">
@@ -64,6 +66,7 @@ export default function Basket(props) {
           </>
         )}
       </div>
-    </aside>
+      </div>
+   
   );
 }
