@@ -69,12 +69,10 @@ function AllProductView(props) {
 
             {/* <div>
                 {products.map((product) => {
-
                     return <div className="product-card" key={product.id}
                         onClick={(event) => {
                             event.preventDefault();
                             console.log('div clicked : id = ', product.id)
-
                         }}>
                         <div>
                             <img src={product.picture} alt={product.title}></img>
@@ -90,10 +88,8 @@ function AllProductView(props) {
                                 <button>View Record</button>
                             </Link>
                             <button onClick={addToCart(product.id)}>Add to Cart</button>
-
                         </div>
                     
-
                 })}
             </div> */}
         </div>

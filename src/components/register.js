@@ -10,7 +10,7 @@ const createUser = async (username, password) => {
 
     console.log("new username and password", username, password)
     
-    const response = await fetch('http:localhost:4000/api/users/signup', {
+    const response = await fetch('http://localhost:4000/api/users/signup', {
         
 
 //     const response = await fetch('https:localhost:4000/api/signup', {
@@ -60,12 +60,16 @@ const Register = () => {
         
     return (
         <div>
+            <h2>Sign Up</h2>
             <form onSubmit={handleSubmit} className="registerForm">
                 <input type = "text" placeholder = "New Username" value = {username} onChange={(event) => setUsername(event.target.value)}></input><br></br>
+                <br></br>
                 <input type = "text" placeholder = "New Password" value = {password} onChange={(event) => setPassword(event.target.value)}></input><br></br>
+                <br></br>
                 <button type = "submit" className="button">
                     Create New Account
                 </button>
+                
                
             </form>
 
