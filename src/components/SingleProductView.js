@@ -1,11 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import Basket from  './Basket'
 
 function SingleProductView(props) {
-  console.log('These are the props passed to SingleProductView', props)
-  const { products, onAdd } = props;
-
-  console.log('These are the products from the SingleProductView props', products)
+ 
+  const { products, onAdd, onRemove, cartItems } = props;
 
   const { id } = useParams();
   console.log('This is id from useParams', id);
@@ -51,14 +50,16 @@ function SingleProductView(props) {
       }
       </p>
 
+      <button onClick={(event) => {onAdd(singleProduct);event.preventDefault()}}>Add To Cart</button>
+
       </div>
 
       
 
       <div>
-        
-      <button onClick={(event) => {onAdd(singleProduct);event.preventDefault()}}>Add To Cart</button>
+        <Basket onAdd={onAdd} onRemove={onRemove} cartItems={cartItems}/>
       </div>
+
     </div>
   )
 

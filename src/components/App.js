@@ -5,6 +5,7 @@ import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import Register from './Register';
 import Login from './Login'
+import Cart from './Cart'
 import Basket from './Basket';
 import '../App.css';
 
@@ -20,7 +21,11 @@ function App() {
   // const [guestCart, setGuestCart] = useState([]);
   // const [totalItemNumber, setTotalItemNumber] = useState(0);
   // const [user,setUser]= useState(null)
+  const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([])
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProductUnits, setUserProductUnits] = useState([])
+
   const fetchProducts = async () => {
     try {
 
@@ -32,6 +37,72 @@ function App() {
       setProducts(data);
 
       return data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const loginUser = async (username, password) => {
+    try {
+        const response = await fetch('http:localhost:4000/api/login', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+
+                username: username,
+                password: password
+
+            })
+        })
+        console.log("this is the response from loginuser", response)
+        if (response) {
+            const { data: { token } } = await response.json();
+            localStorage.setItem("token", token)
+            setIsLoggedIn(true)
+
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+  const addProductToProductUnits = async (orderId, productId, price) => {
+    try {
+
+      const response = await fetch('http://localhost:4000/api/productUnits', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+
+          orderId: orderId,
+          password: productId,
+          price: price
+
+        })
+      })
+      const data = await response.json();
+      console.log('I am the data from addProductToProductUnits func', data)
+      return data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const fetchUserProductUnits = async (userId) => {
+    try {
+
+      const response = await fetch('http://localhost:4000/api/products', {
+        mode: "cors"
+      })
+      const userProductUnits = await response.json();
+      console.log('I am the userProductUnits', userProductUnits)
+      setUserProductUnits(userProductUnits);
+
+      return userProductUnits
     } catch (error) {
       console.error(error)
     }
@@ -52,7 +123,7 @@ function App() {
   // )
   const onAdd = (product) => {
 
-
+    console.log("This is the produnt info in onAdd func", product)
     // if(user){
 
 
@@ -66,6 +137,9 @@ function App() {
     } else {
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
+    //fetch method to add to productUnits table, adding orderId, productId, and price
+    addProductToProductUnits(/*user's state.orderId,*/ product.id, product.price)
+
     // }
   };
 
@@ -84,9 +158,11 @@ function App() {
         )
       );
     }
+    ////fetch method to remove to productUnits table, adding orderId, productId, and price
+        //or have user remove from the cart view
   };
 
-  const [products, setProducts] = useState([]);
+  
 
 
 
@@ -130,21 +206,19 @@ function App() {
               <AllProductsView products={products} />
             </Route>
             <Route exact path="/:id">
-              <SingleProductView onAdd={onAdd} products={products} />
+              <SingleProductView onAdd={onAdd} products={products} onRemove={onRemove} cartItems={cartItems} />
             </Route>
             <Route exact path="/users/signup">
               <Register />
             </Route>
             <Route exact path="/users/login">
-              <Login />
+              <Login loginUser={loginUser} isLoggedIn={isLoggedIn}/>
             </Route>
             <Route exact path="/orders/cart">
-              <Basket
-                onAdd={onAdd}
-                onRemove={onRemove}
-                cartItems={cartItems}>
-              </Basket>
+              <Cart userProductUnits={userProductUnits} />
             </Route>
+            <Route  >
+              </Route>
           </Switch>
 
 
