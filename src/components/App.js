@@ -4,20 +4,26 @@ import { Route, Link, Switch, Router } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import Register from './Register';
-import Login from './Login';
+import Login from './Login'
+import Basket from './Basket';
 import '../App.css';
 
 // import GuestCart from './GuestCart';
 import Header from './Header';
 import Main from './Main';
-import Basket from './Basket';
-
+// import Basket from './Basket';
 
 function App() {
   // const [guestCart, setGuestCart] = useState([]);
   // const [totalItemNumber, setTotalItemNumber] = useState(0);
   // const [user,setUser]= useState(null)
   const [cartItems, setCartItems] = useState([])
+  const [user , setUser]= useState(null);
+
+
+  useEffect(()=>{
+    console.log(user);
+  },[user])
   const fetchProducts = async () => {
     try {
 
@@ -37,15 +43,21 @@ function App() {
 
   useEffect(() => {
     fetchProducts()
-    setCartItems(JSON.parse(localStorage.cartItems))
-    console.log(JSON.parse(localStorage.getItem("cartItems")))
+    // setCartItems(JSON.parse(localStorage.cartItems))
+    // console.log(JSON.parse(localStorage.getItem("cartItems")))
   }, []);
 
 
-  useEffect(() => {
-    const _cartItems = JSON.stringify(cartItems)
-    localStorage.setItem("cartItems", _cartItems);
-  }, [cartItems]
+  async function sendCart(){
+
+  }
+
+  useEffect(()=>{}
+ 
+//   useEffect(() => {
+//     const _cartItems = JSON.stringify(cartItems)
+//     localStorage.setItem("cartItems", _cartItems);
+//   }, [cartItems]
   )
   const onAdd = (product) => {
 
@@ -55,14 +67,19 @@ function App() {
 
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist) {
+
+
+      //post request
       setCartItems(
         cartItems.map((x) =>
           x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
         )
       );
     } else {
+      //post request
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
+
     // }
   };
 
@@ -87,73 +104,77 @@ function App() {
 
 
 
-
   return (
+
     <div className="App">
-      <header className="App-header">
-        <div>
-          <a className="App-link" href="http://localhost:3000/" rel="noopener noreferrer">
-            this.Group Records
-          </a>
-
-          {/* <img className="album-cover" src="this.group_records@300x.png" alt="this.Group Records"></img> */}
-        </div>
-        <div className="header-right">
-          {/* <Router> */}
-          <Link to="/user/signup">Sign Up</Link>
-          <br></br>
-          <Link to="/users/login">Login</Link>
-          {/* </Router> */}
-
-
-          {/* <Header></Header> */}
-        </div>
-        
-      </header>
-    
-      
-
-    <div className="main">
-      <div className="side-bar">
-        <Link className="side-bar-content" to="/">All Records</Link>
-        <br></br>
-        <Link className="side-bar-content">Cart</Link>
-      </div>
-
-     
-
-
       <div>
-        <Switch>
+        <header className="App-header">
+          <div>
+            <a className="App-link" href="http://localhost:3000/" rel="noopener noreferrer">
+              this.Group Records
+            </a>
 
-          <Route exact path="/">
-            <AllProductsView products={products} />
-          </Route>
-          <Route path="/:id">
-            <SingleProductView onAdd={onAdd} products={products} />
-          </Route>
-          <Route path="/user/signup">
-            <Register />
-          </Route>
-          <Route path="/users/login">
-            <Login />
-          </Route>
-        </Switch>
+            {/* <img className="album-cover" src="this.group_records@300x.png" alt="this.Group Records"></img> */}
+          </div>
+          <div className="header-right">
+            <Link to="/users/signup">Sign Up</Link>
+            <br></br>
+            <Link to="/users/login">Login</Link>
+
+            {/* <Header></Header> */}
+          </div>
+        </header>
+      </div>
 
 
-        {/* <div>
-        <Basket
-          onAdd={onAdd}
-          onRemove={onRemove}
-          cartItems={cartItems}>
-        </Basket>
-        </div> */}
+      <div className="main">
+        <div className="side-bar">
+          <Link className="side-bar-content" to="/">All Records</Link>
+          <br></br>
+          <Link className="side-bar-content" to="/orders/cart">Cart</Link>
+        </div>
+
+
+
+        <div>
+          <Switch>
+
+            <Route exact path="/">
+              <AllProductsView products={products} />
+            </Route>
+            <Route exact path="/:id">
+              <SingleProductView onAdd={onAdd} products={products} />
+            </Route>
+            <Route exact path="/users/signup">
+              <Register user={user} setUser = {setUser}/>
+            </Route>
+            <Route exact path="/users/login">
+              <Login user={user} setUser={setUser}/>
+            </Route>
+            <Route exact path="/orders/cart">
+              <Basket
+                onAdd={onAdd}
+                onRemove={onRemove}
+                cartItems={cartItems}>
+              </Basket>
+            </Route>
+          </Switch>
+
+
+          {/* <Main onAdd={onAdd} products={products}></Main> */}
+          {/* <Basket
+            onAdd={onAdd}
+            onRemove={onRemove}
+            cartItems={cartItems}>
+          </Basket> */}
+
 
       </div>
-      </div>
-      </div>
-    
-      
+
+
+    </div>
+
+
   );
 }
 
