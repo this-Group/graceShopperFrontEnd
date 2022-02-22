@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import { useEffect, useState } from 'react';
-import { Route, Link, Switch } from 'react-router-dom';
+import { Route, Link, Switch, Router } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import Register from './Register';
@@ -12,9 +12,6 @@ import '../App.css';
 import Header from './Header';
 import Main from './Main';
 // import Basket from './Basket';
-
-
-
 
 function App() {
   // const [guestCart, setGuestCart] = useState([]);
@@ -57,6 +54,10 @@ function App() {
 
   useEffect(()=>{}
  
+//   useEffect(() => {
+//     const _cartItems = JSON.stringify(cartItems)
+//     localStorage.setItem("cartItems", _cartItems);
+//   }, [cartItems]
   )
   const onAdd = (product) => {
 
@@ -79,7 +80,6 @@ function App() {
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
 
-
     // }
   };
 
@@ -101,7 +101,6 @@ function App() {
   };
 
   const [products, setProducts] = useState([]);
-
 
 
 
@@ -169,10 +168,12 @@ function App() {
             cartItems={cartItems}>
           </Basket> */}
 
-        </div>
+
       </div>
 
+
     </div>
+
 
   );
 }
