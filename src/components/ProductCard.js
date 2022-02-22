@@ -27,7 +27,7 @@ const ProductCard = (props) => {
                 <p>Artist: {product.artist}</p>
                 <p>Genre: {product.genre}</p>
                 <p>Price: {product.price}</p>
-                <button onClick={() => onAdd(product)}>Add To Cart</button>
+                {/* <button onClick={() => onAdd(product)}>Add To Cart</button> */}
             </div>
             
         </div>

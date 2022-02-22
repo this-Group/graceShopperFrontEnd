@@ -5,6 +5,7 @@ import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import Register from './Register';
 import Login from './Login'
+import Cart from './Cart'
 import Basket from './Basket';
 import '../App.css';
 
@@ -13,17 +14,21 @@ import Header from './Header';
 import Main from './Main';
 // import Basket from './Basket';
 
+
 function App() {
   // const [guestCart, setGuestCart] = useState([]);
   // const [totalItemNumber, setTotalItemNumber] = useState(0);
   // const [user,setUser]= useState(null)
+  const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([])
-  const [user , setUser]= useState(null);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProductUnits, setUserProductUnits] = useState([])
+  const [user, setUser] = useState(null)
 
   useEffect(()=>{
     console.log(user);
   },[user])
+
   const fetchProducts = async () => {
     try {
 
@@ -41,11 +46,169 @@ function App() {
   }
 
 
+//   const loginUser = async (username, password) => {
+//     try {
+//         const response = await fetch('http:localhost:4000/api/login', {
+//             method: "POST",
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
+
+//                 username: username,
+//                 password: password
+
+//             })
+//         })
+//         console.log("this is the response from loginuser", response)
+//         if (response) {
+//             const { data: { token } } = await response.json();
+//             localStorage.setItem("token", token)
+//             setIsLoggedIn(true)
+//             setUser(/* data returned from login with userI and orderId*/)
+
+//         }
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
+  
+const loginUser = async (username, password) => {
+            try {
+                const response = await fetch('http://localhost:4000/api/users/login', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+
+                        username: username,
+                        password: password
+
+                    })
+                })
+                console.log("this is the response from loginuser", response)
+                if (response) {
+                    const {  token, user  } = await response.json();
+                    localStorage.setItem("token", token)
+                    setIsLoggedIn(true)
+                    setUser(user);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+// const createUser = async (username, password) => {
+//   console.log('This is the createUser func');
+
+//   console.log("new username and password", username, password)
+  
+//   const response = await fetch('http://localhost:4000/api/users/signup', {
+
+//       method: "POST",
+//       headers: {
+//           'Content-Type' : 'application/json',
+//       },
+
+//       body: JSON.stringify({
+//           username: username,
+//           password: password
+//       }),
+//       mode: "cors",
+//   });
+//   console.log("this is the response", response)
+//   return response;
+// }
+
+const createUser = async (username, password) => {
+        console.log('This is the createUser func');
+    
+        console.log("new username and password", username, password)
+        
+         fetch('http://localhost:4000/api/users/signup', {
+            
+    
+    //     const response = await fetch('https:localhost:4000/api/signup', {
+    
+            method: "POST",
+            headers: {
+                'Content-Type' : 'application/json',
+            },
+    
+            body: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            mode: "cors",
+        }).then (res => res.json()).then( data => {localStorage.setItem('token', data.token);
+            setUser(data.user);
+    })
+        
+    
+    //         body: {
+    //             username: username, 
+    //             password: password
+    //         }
+    //     });
+    
+        // if (response) {
+        //     const {token } = await response.json();
+        //     localStorage.setItem("token", token)
+        // }
+     
+    }
+
+
+  const addProductToProductUnits = async (orderId, productId, price) => {
+    try {
+
+      const response = await fetch('http://localhost:4000/api/productUnits', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+
+          orderId: orderId,
+          password: productId,
+          price: price
+
+        })
+      })
+      const data = await response.json();
+      console.log('I am the data from addProductToProductUnits func', data)
+      return data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const fetchUserProductUnits = async (userId) => {
+    try {
+
+      const response = await fetch('http://localhost:4000/api/products', {
+        mode: "cors"
+      })
+      const userProductUnits = await response.json();
+      console.log('I am the userProductUnits', userProductUnits)
+      setUserProductUnits(userProductUnits);
+
+      return userProductUnits
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
   useEffect(() => {
     fetchProducts()
+    
+
     // setCartItems(JSON.parse(localStorage.cartItems))
     // console.log(JSON.parse(localStorage.getItem("cartItems")))
   }, []);
+
 
 
   async function sendCart(){
@@ -59,9 +222,10 @@ function App() {
 //     localStorage.setItem("cartItems", _cartItems);
 //   }, [cartItems]
   )
+
   const onAdd = (product) => {
 
-
+    console.log("This is the produnt info in onAdd func", product)
     // if(user){
 
 
@@ -79,6 +243,11 @@ function App() {
       //post request
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
+
+    //fetch method to add to productUnits table, adding orderId, productId, and price
+    addProductToProductUnits(/*user's state.orderId,*/ product.id, product.price)
+
+
 
     // }
   };
@@ -98,23 +267,25 @@ function App() {
         )
       );
     }
+    ////fetch method to remove to productUnits table, adding orderId, productId, and price
+        //or have user remove from the cart view
   };
-
-  const [products, setProducts] = useState([]);
-
 
 
   return (
+
 
     <div className="App">
       <div>
         <header className="App-header">
           <div>
             <a className="App-link" href="http://localhost:3000/" rel="noopener noreferrer">
-              this.Group Records
+              <img className="logo" src="https://i.imgur.com/5YzkXBU.png" alt="this.Group Records"></img>
             </a>
 
-            {/* <img className="album-cover" src="this.group_records@300x.png" alt="this.Group Records"></img> */}
+            
+
+            
           </div>
           <div className="header-right">
             <Link to="/users/signup">Sign Up</Link>
@@ -125,7 +296,6 @@ function App() {
           </div>
         </header>
       </div>
-
 
       <div className="main">
         <div className="side-bar">
@@ -143,21 +313,21 @@ function App() {
               <AllProductsView products={products} />
             </Route>
             <Route exact path="/:id">
-              <SingleProductView onAdd={onAdd} products={products} />
+
+              <SingleProductView onAdd={onAdd} products={products} onRemove={onRemove} cartItems={cartItems} />
             </Route>
             <Route exact path="/users/signup">
-              <Register user={user} setUser = {setUser}/>
+              <Register createUser={createUser} user={user} setUser = {setUser}/>
             </Route>
             <Route exact path="/users/login">
-              <Login user={user} setUser={setUser}/>
+              <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser}/>
             </Route>
             <Route exact path="/orders/cart">
-              <Basket
-                onAdd={onAdd}
-                onRemove={onRemove}
-                cartItems={cartItems}>
-              </Basket>
+              <Cart fetchUserProductUnits={fetchUserProductUnits} user={user}userProductUnits={userProductUnits} />
             </Route>
+            <Route  >
+              </Route>
+
           </Switch>
 
 
