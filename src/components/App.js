@@ -25,6 +25,7 @@ function App() {
   const [cartItems, setCartItems] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProductUnits, setUserProductUnits] = useState([])
+  const [user, setUser] = useState([])
 
   const fetchProducts = async () => {
     try {
@@ -61,11 +62,34 @@ function App() {
             const { data: { token } } = await response.json();
             localStorage.setItem("token", token)
             setIsLoggedIn(true)
+            setUser(/* data returned from login with userI and orderId*/)
 
         }
     } catch (error) {
         console.error(error);
     }
+}
+
+const createUser = async (username, password) => {
+  console.log('This is the createUser func');
+
+  console.log("new username and password", username, password)
+  
+  const response = await fetch('http://localhost:4000/api/users/signup', {
+
+      method: "POST",
+      headers: {
+          'Content-Type' : 'application/json',
+      },
+
+      body: JSON.stringify({
+          username: username,
+          password: password
+      }),
+      mode: "cors",
+  });
+  console.log("this is the response", response)
+  return response;
 }
 
   const addProductToProductUnits = async (orderId, productId, price) => {
@@ -111,6 +135,7 @@ function App() {
 
   useEffect(() => {
     fetchProducts()
+    
     // setCartItems(JSON.parse(localStorage.cartItems))
     // console.log(JSON.parse(localStorage.getItem("cartItems")))
   }, []);
@@ -174,10 +199,12 @@ function App() {
         <header className="App-header">
           <div>
             <a className="App-link" href="http://localhost:3000/" rel="noopener noreferrer">
-              this.Group Records
+              <img className="logo" src="https://i.imgur.com/5YzkXBU.png" alt="this.Group Records"></img>
             </a>
 
-            {/* <img className="album-cover" src="this.group_records@300x.png" alt="this.Group Records"></img> */}
+            
+
+            
           </div>
           <div className="header-right">
             <Link to="/users/signup">Sign Up</Link>
@@ -209,13 +236,13 @@ function App() {
               <SingleProductView onAdd={onAdd} products={products} onRemove={onRemove} cartItems={cartItems} />
             </Route>
             <Route exact path="/users/signup">
-              <Register />
+              <Register createUser={createUser}/>
             </Route>
             <Route exact path="/users/login">
               <Login loginUser={loginUser} isLoggedIn={isLoggedIn}/>
             </Route>
             <Route exact path="/orders/cart">
-              <Cart userProductUnits={userProductUnits} />
+              <Cart fetchUserProductUnits={fetchUserProductUnits} user={user}userProductUnits={userProductUnits} />
             </Route>
             <Route  >
               </Route>

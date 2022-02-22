@@ -33,6 +33,13 @@ body{
   
 }
 
+.logo{
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+
+}
+
 .header-right{
   display: flex;
   justify-content: space-around;
