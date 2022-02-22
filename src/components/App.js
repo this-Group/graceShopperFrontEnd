@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import { useEffect, useState } from 'react';
-import { Route, Link, Switch } from 'react-router-dom';
+import { Route, Link, Switch, Router } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import Register from './Register';
@@ -15,8 +15,6 @@ import Main from './Main';
 // import Basket from './Basket';
 
 
-
-
 function App() {
   // const [guestCart, setGuestCart] = useState([]);
   // const [totalItemNumber, setTotalItemNumber] = useState(0);
@@ -25,7 +23,11 @@ function App() {
   const [cartItems, setCartItems] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProductUnits, setUserProductUnits] = useState([])
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState(null)
+
+  useEffect(()=>{
+    console.log(user);
+  },[user])
 
   const fetchProducts = async () => {
     try {
@@ -43,54 +45,120 @@ function App() {
     }
   }
 
-  const loginUser = async (username, password) => {
-    try {
-        const response = await fetch('http:localhost:4000/api/login', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
 
-                username: username,
-                password: password
+//   const loginUser = async (username, password) => {
+//     try {
+//         const response = await fetch('http:localhost:4000/api/login', {
+//             method: "POST",
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
 
-            })
-        })
-        console.log("this is the response from loginuser", response)
-        if (response) {
-            const { data: { token } } = await response.json();
-            localStorage.setItem("token", token)
-            setIsLoggedIn(true)
-            setUser(/* data returned from login with userI and orderId*/)
+//                 username: username,
+//                 password: password
 
+//             })
+//         })
+//         console.log("this is the response from loginuser", response)
+//         if (response) {
+//             const { data: { token } } = await response.json();
+//             localStorage.setItem("token", token)
+//             setIsLoggedIn(true)
+//             setUser(/* data returned from login with userI and orderId*/)
+
+//         }
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
+  
+const loginUser = async (username, password) => {
+            try {
+                const response = await fetch('http://localhost:4000/api/users/login', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+
+                        username: username,
+                        password: password
+
+                    })
+                })
+                console.log("this is the response from loginuser", response)
+                if (response) {
+                    const {  token, user  } = await response.json();
+                    localStorage.setItem("token", token)
+                    setIsLoggedIn(true)
+                    setUser(user);
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
-    } catch (error) {
-        console.error(error);
-    }
-}
+
+// const createUser = async (username, password) => {
+//   console.log('This is the createUser func');
+
+//   console.log("new username and password", username, password)
+  
+//   const response = await fetch('http://localhost:4000/api/users/signup', {
+
+//       method: "POST",
+//       headers: {
+//           'Content-Type' : 'application/json',
+//       },
+
+//       body: JSON.stringify({
+//           username: username,
+//           password: password
+//       }),
+//       mode: "cors",
+//   });
+//   console.log("this is the response", response)
+//   return response;
+// }
 
 const createUser = async (username, password) => {
-  console.log('This is the createUser func');
+        console.log('This is the createUser func');
+    
+        console.log("new username and password", username, password)
+        
+         fetch('http://localhost:4000/api/users/signup', {
+            
+    
+    //     const response = await fetch('https:localhost:4000/api/signup', {
+    
+            method: "POST",
+            headers: {
+                'Content-Type' : 'application/json',
+            },
+    
+            body: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            mode: "cors",
+        }).then (res => res.json()).then( data => {localStorage.setItem('token', data.token);
+            setUser(data.user);
+    })
+        
+    
+    //         body: {
+    //             username: username, 
+    //             password: password
+    //         }
+    //     });
+    
+        // if (response) {
+        //     const {token } = await response.json();
+        //     localStorage.setItem("token", token)
+        // }
+     
+    }
 
-  console.log("new username and password", username, password)
-  
-  const response = await fetch('http://localhost:4000/api/users/signup', {
-
-      method: "POST",
-      headers: {
-          'Content-Type' : 'application/json',
-      },
-
-      body: JSON.stringify({
-          username: username,
-          password: password
-      }),
-      mode: "cors",
-  });
-  console.log("this is the response", response)
-  return response;
-}
 
   const addProductToProductUnits = async (orderId, productId, price) => {
     try {
@@ -136,16 +204,25 @@ const createUser = async (username, password) => {
   useEffect(() => {
     fetchProducts()
     
+
     // setCartItems(JSON.parse(localStorage.cartItems))
     // console.log(JSON.parse(localStorage.getItem("cartItems")))
   }, []);
 
 
-  // useEffect(()=>{
-  //   const _cartItems = JSON.stringify(cartItems)
-  //   localStorage.setItem("cartItems", _cartItems);
-  // },[cartItems]
-  // )
+
+  async function sendCart(){
+
+  }
+
+  useEffect(()=>{}
+ 
+//   useEffect(() => {
+//     const _cartItems = JSON.stringify(cartItems)
+//     localStorage.setItem("cartItems", _cartItems);
+//   }, [cartItems]
+  )
+
   const onAdd = (product) => {
 
     console.log("This is the produnt info in onAdd func", product)
@@ -154,16 +231,23 @@ const createUser = async (username, password) => {
 
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist) {
+
+
+      //post request
       setCartItems(
         cartItems.map((x) =>
           x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
         )
       );
     } else {
+      //post request
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
+
     //fetch method to add to productUnits table, adding orderId, productId, and price
     addProductToProductUnits(/*user's state.orderId,*/ product.id, product.price)
+
+
 
     // }
   };
@@ -187,12 +271,9 @@ const createUser = async (username, password) => {
         //or have user remove from the cart view
   };
 
-  
-
-
-
 
   return (
+
 
     <div className="App">
       <div>
@@ -216,7 +297,6 @@ const createUser = async (username, password) => {
         </header>
       </div>
 
-
       <div className="main">
         <div className="side-bar">
           <Link className="side-bar-content" to="/">All Records</Link>
@@ -233,19 +313,21 @@ const createUser = async (username, password) => {
               <AllProductsView products={products} />
             </Route>
             <Route exact path="/:id">
+
               <SingleProductView onAdd={onAdd} products={products} onRemove={onRemove} cartItems={cartItems} />
             </Route>
             <Route exact path="/users/signup">
-              <Register createUser={createUser}/>
+              <Register createUser={createUser} user={user} setUser = {setUser}/>
             </Route>
             <Route exact path="/users/login">
-              <Login loginUser={loginUser} isLoggedIn={isLoggedIn}/>
+              <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser}/>
             </Route>
             <Route exact path="/orders/cart">
               <Cart fetchUserProductUnits={fetchUserProductUnits} user={user}userProductUnits={userProductUnits} />
             </Route>
             <Route  >
               </Route>
+
           </Switch>
 
 
@@ -256,10 +338,12 @@ const createUser = async (username, password) => {
             cartItems={cartItems}>
           </Basket> */}
 
-        </div>
+
       </div>
 
+
     </div>
+
 
   );
 }

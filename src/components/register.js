@@ -5,6 +5,7 @@ import { useState } from "react";
 
 // const {createUser} = require('../../db/users');
 
+
 // const createUser = async (username, password) => {
 //     console.log('This is the createUser func');
 
@@ -30,8 +31,47 @@ import { useState } from "react";
 
 const Register = (props) => {
     const {createUser} = props
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+//     const createUser = async (username, password) => {
+//         console.log('This is the createUser func');
+    
+//         console.log("new username and password", username, password)
+        
+//          fetch('http://localhost:4000/api/users/signup', {
+            
+    
+//     //     const response = await fetch('https:localhost:4000/api/signup', {
+    
+//             method: "POST",
+//             headers: {
+//                 'Content-Type' : 'application/json',
+//             },
+    
+//             body: JSON.stringify({
+//                 username: username,
+//                 password: password
+//             }),
+//             mode: "cors",
+//         }).then (res => res.json()).then( data => {localStorage.setItem('token', data.token);
+//             setUser(data.user);
+//     })
+        
+    
+    //         body: {
+    //             username: username, 
+    //             password: password
+    //         }
+    //     });
+    
+        // if (response) {
+        //     const {token } = await response.json();
+        //     localStorage.setItem("token", token)
+        // }
+     
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();

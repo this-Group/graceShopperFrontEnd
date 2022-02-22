@@ -15,9 +15,14 @@ export default function Basket(props) {
         {/* {cartItems.length === 0 && <div>Cart is empty</div>} */}
         {cartItems.map((item) => (
           <div key={item.id} className="row">
+
             
             {/* <img className="album-cover" src={item.picture} alt={item.title}></img> */}
             {/* <div className="col-2">{item.title} --- {item.artist}</div> */}
+
+            
+            <div className="col-2">*Member Price:* ${item.price} x Quantity:{item.qty}</div>
+
 
             <div className="col-2">
               <button onClick={() => onRemove(item)} className="remove">
