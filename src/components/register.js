@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDom from "react-dom";
 // import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { useState } from "react";
@@ -30,7 +30,9 @@ import { useState } from "react";
 
 
 const Register = (props) => {
-    const {createUser} = props
+    console.log("props from register", props)
+    const {createUser, user} = props
+    console.log("user from props from register", user)
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -79,11 +81,20 @@ const Register = (props) => {
         console.log("From handleSumbit for register", username, password)
 
         
-        createUser(username, password)
+        createUser(username, password);
+        console.log("after create user");
         setUsername('');
         setPassword('');
 
-    }    
+    
+
+    }
+    
+    useEffect(()=> {
+        console.log("This is the userState", user)
+        console.log("this is the userId", user?.id)
+        console.log("this is the orderId", user?.userId)
+    },[user])
         
     return (
         <div>
