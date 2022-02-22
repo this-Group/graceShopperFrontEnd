@@ -71,7 +71,7 @@ const Register = (props) => {
         //     localStorage.setItem("token", token)
         // }
      
-    }
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();

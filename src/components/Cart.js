@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 function Cart(props) {
     const { userProductUnits, fetchUserProductUnits, user } = props
     
-    useEffect(() => {
-        fetchUserProductUnits(user.userID)
+    // useEffect(() => {
+    //     fetchUserProductUnits(user.userID)
         
-        // setCartItems(JSON.parse(localStorage.cartItems))
-        // console.log(JSON.parse(localStorage.getItem("cartItems")))
-      }, []);
+    //     // setCartItems(JSON.parse(localStorage.cartItems))
+    //     // console.log(JSON.parse(localStorage.getItem("cartItems")))
+    //   }, []);
 
     return (
         <div>
