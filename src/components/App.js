@@ -126,7 +126,7 @@ const createUser = async (username, password) => {
     
         console.log("new username and password", username, password)
         
-         fetch('http://localhost:4000/api/users/signup', {
+        const response = await fetch('http://localhost:4000/api/users/signup', {
             
     
     //     const response = await fetch('https:localhost:4000/api/signup', {
@@ -141,8 +141,14 @@ const createUser = async (username, password) => {
                 password: password
             }),
             mode: "cors",
-        }).then (res => res.json()).then( data => {localStorage.setItem('token', data.token);
-            setUser(data.user);
+        }
+        
+        ).then (res => res.json()).then( data => {localStorage.setItem('token', data.token);
+            console.log(data)
+        setUser(data.user);
+
+        
+        
     })
         
     
@@ -341,7 +347,7 @@ const createUser = async (username, password) => {
 
       </div>
 
-
+          </div>
     </div>
 
 
