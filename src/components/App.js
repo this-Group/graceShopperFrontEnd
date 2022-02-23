@@ -165,7 +165,7 @@ function App() {
   const addProductToProductUnits = async (orderId, productId, price) => {
     try {
 
-      const response = await fetch('http://localhost:4000/api/productUnits', {
+      const response = await fetch('http://localhost:4000/api/productunits', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
