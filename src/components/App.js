@@ -17,9 +17,6 @@ import { findRenderedComponentWithType } from 'react-dom/cjs/react-dom-test-util
 
 
 function App() {
-  // const [guestCart, setGuestCart] = useState([]);
-  // const [totalItemNumber, setTotalItemNumber] = useState(0);
-  // const [user,setUser]= useState(null)
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,6 +24,11 @@ function App() {
   const [user, setUser] = useState({})
 
   console.log("user state", user)
+
+  const userId = localStorage.getItem("userId")
+  console.log("userIdfrom local storage", userId)
+  const orderId = localStorage.getItem("orderId")
+  console.log("userIdfrom local storage", orderId)
 
   useEffect(() => {
     console.log("this is the user state at top of App", user);
@@ -47,34 +49,6 @@ function App() {
       console.error(error)
     }
   }
-
-
-  //   const loginUser = async (username, password) => {
-  //     try {
-  //         const response = await fetch('http:localhost:4000/api/login', {
-  //             method: "POST",
-  //             headers: {
-  //                 'Content-Type': 'application/json'
-  //             },
-  //             body: JSON.stringify({
-
-  //                 username: username,
-  //                 password: password
-
-  //             })
-  //         })
-  //         console.log("this is the response from loginuser", response)
-  //         if (response) {
-  //             const { data: { token } } = await response.json();
-  //             localStorage.setItem("token", token)
-  //             setIsLoggedIn(true)
-  //             setUser(/* data returned from login with userI and orderId*/)
-
-  //         }
-  //     } catch (error) {
-  //         console.error(error);
-  //     }
-  // }
 
   const loginUser = async (username, password) => {
     try {
@@ -97,38 +71,18 @@ function App() {
         localStorage.setItem("token", user.token)
 
         localStorage.setItem("userId", user.user.userId)
+        localStorage.setItem("orderId", user.user.orderId)
 
         setIsLoggedIn(true)
         setUser(user);
+
 
       }
     } catch (error) {
       console.error(error);
     }
+
   }
-
-
-  // const createUser = async (username, password) => {
-  //   console.log('This is the createUser func');
-
-  //   console.log("new username and password", username, password)
-
-  //   const response = await fetch('http://localhost:4000/api/users/signup', {
-
-  //       method: "POST",
-  //       headers: {
-  //           'Content-Type' : 'application/json',
-  //       },
-
-  //       body: JSON.stringify({
-  //           username: username,
-  //           password: password
-  //       }),
-  //       mode: "cors",
-  //   });
-  //   console.log("this is the response", response)
-  //   return response;
-  // }
 
   const createUser = async (username, password) => {
     console.log('This is the createUser func');
@@ -136,9 +90,6 @@ function App() {
     console.log("new username and password", username, password)
 
     const response = await fetch('http://localhost:4000/api/users/signup', {
-
-
-      //     const response = await fetch('https:localhost:4000/api/signup', {
 
       method: "POST",
       headers: {
@@ -161,6 +112,8 @@ function App() {
       const user = await response.json();
       console.log("this is the user info from createUser", user)
       localStorage.setItem("token", user.token)
+      localStorage.setItem("userId", user.user.userId)
+      localStorage.setItem("orderId", user.user.orderId)
       setIsLoggedIn(true);
       setUser(user.user);
 
@@ -180,7 +133,7 @@ function App() {
         body: JSON.stringify({
 
           orderId: orderId,
-          password: productId,
+          productId: productId,
           price: price
 
         })
@@ -191,6 +144,32 @@ function App() {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  const deleteProductUnits = async (id) => {
+    try {
+      const response = await fetch('http://localhost:4000/api/productUnits/', {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+
+          id: id
+
+        })
+      })
+      console.log("this is the response deleteProductUnits from ", response)
+      if (response) {
+        const deletedProduct = await response.json();
+        console.log("this is the user info from deleteProductUnits", deletedProduct)
+
+
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
   }
 
   const fetchUserProductUnits = async (userId) => {
@@ -207,7 +186,7 @@ function App() {
 
       });
 
-      console.log("fetchUserProductUnits response" , response)
+      console.log("fetchUserProductUnits response", response)
       const userProductUnits = await response.json();
       console.log('I am the userProductUnits', userProductUnits)
       setUserProductUnits(userProductUnits);
@@ -218,6 +197,33 @@ function App() {
     }
   }
 
+const checkout = async () =>{
+  try {
+    //if card info is valid
+      //update current order
+      //create new order
+      //return order processing 
+
+    const response = await fetch(`http://localhost:4000/api/myorders`, {
+      method: "PATCH",
+      body: {
+        orderId : orderId,
+        status: "PROCESSING"
+
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      mode: "cors"
+    });
+    console.log("checkout func response", response)
+    const checkedOutOrder = await response.json();
+    console.log("I am the checkedOutOrder", checkedOutOrder)
+  } catch (error) {
+    console.error(error)
+  }  
+
+}
 
   useEffect(() => {
     fetchProducts()
@@ -229,17 +235,8 @@ function App() {
 
 
 
-  async function sendCart() {
 
-  }
 
-  useEffect(() => { }
-
-    //   useEffect(() => {
-    //     const _cartItems = JSON.stringify(cartItems)
-    //     localStorage.setItem("cartItems", _cartItems);
-    //   }, [cartItems]
-  )
 
   const onAdd = async(product) => {
 
@@ -254,7 +251,7 @@ function App() {
     })
     console.log(res);
 
-    console.log("This is the produnt info in onAdd func", product)
+    console.log("This is the product info in onAdd func", product)
     // if(user){
 
 
@@ -274,7 +271,8 @@ function App() {
     }
 
     //fetch method to add to productUnits table, adding orderId, productId, and price
-    addProductToProductUnits(/*user's state.orderId,*/ product.id, product.price)
+    
+    addProductToProductUnits( orderId, product.id, product.price)
 
 
 
@@ -296,6 +294,7 @@ function App() {
         )
       );
     }
+
     ////fetch method to remove to productUnits table, adding orderId, productId, and price
     //or have user remove from the cart view
 
@@ -308,6 +307,7 @@ function App() {
     setUser(null);
     setIsLoggedIn(false);
     
+
 
   };
 
@@ -341,7 +341,7 @@ function App() {
 
       <div className="main">
         <div className="side-bar">
-        {/* <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} /> */}
+          {/* <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} /> */}
           <Link className="side-bar-content" to="/">All Records</Link>
           <br></br>
           <Link className="side-bar-content" to="/orders/cart">Cart</Link>
@@ -367,22 +367,12 @@ function App() {
             </Route>
 
             <Route path="/orders/cart">
-
-              <Cart fetchUserProductUnits={fetchUserProductUnits} user={user} userProductUnits={userProductUnits} />
+              <Cart fetchUserProductUnits={fetchUserProductUnits} deleteProductUnits={deleteProductUnits} user={user} userProductUnits={userProductUnits} checkout={checkout} />
             </Route>
             <Route  >
             </Route>
 
           </Switch>
-
-
-          {/* <Main onAdd={onAdd} products={products}></Main> */}
-          {/* <Basket
-            onAdd={onAdd}
-            onRemove={onRemove}
-            cartItems={cartItems}>
-          </Basket> */}
-
 
         </div>
 

@@ -25,9 +25,7 @@ export default function Basket(props) {
 
 
             <div className="col-2">
-              <button onClick={() => onRemove(item)} className="remove">
-                -
-              </button>{' '}
+             
               <button onClick={() => onAdd(item)} className="add">
                 +
               </button>
@@ -63,11 +61,7 @@ export default function Basket(props) {
               </div>
             </div>
             <hr />
-            <div className="row">
-              <button onClick={() => alert('Implement Checkout!')}>
-                Checkout
-              </button>
-            </div>
+            
           </>
         )}
       </div>
