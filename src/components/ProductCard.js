@@ -4,7 +4,7 @@ const ProductCard = (props) => {
 
     const { product, onAdd } = props;
 
-    console.log("this is the product from ProductCard props", product)
+    // console.log("this is the product from ProductCard props", product)
 
     const singleProductViewUrl = `http://localhost:3000/` + `${product.id}`
 

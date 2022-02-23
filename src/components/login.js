@@ -10,7 +10,8 @@ const locallySourcedToken = localStorage.getItem('token');
 
 
 const Login = (props) => {
-    const { loginUser, isLoggedIn, user } = props
+    const { loginUser, isLoggedIn, user, setUser } = props
+    
     
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -30,9 +31,12 @@ const Login = (props) => {
         loginUser(username, password)
         setUsername('');
         setPassword('');
-        console.log("This is the userState", user)
-        console.log("this is the userId", user.user.userId)
-        console.log("this is the orderId", user.user.orderId)
+    }
+    // useEffect(() =>{
+    //     console.log("This is the userState", user)
+    //     console.log("this is the userId", user.user.userId)
+    //     console.log("this is the orderId", user.user.orderId)
+    // },[user])
         // setIsLoggedIn(true)
         //question about fetching from our backend
 
@@ -103,7 +107,7 @@ const Login = (props) => {
         // })
 
 
-    }
+    
 
     return (
         <div className="loginUserForm">

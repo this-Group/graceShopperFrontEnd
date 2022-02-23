@@ -1,22 +1,31 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 
 function Cart(props) {
     const { userProductUnits, fetchUserProductUnits, user } = props
+    // fetchUserProductUnits(userId)
+
+    const userId = localStorage.getItem("userId")
+    console.log("userIdfrom local storage", userId)
+
     console.log("this is the user from props in Cart", user)
-    
+
+    // const { userId } = useParams();
+    // console.log('This is userId from useParams', userId);
+
     // useEffect(() => {
     //     fetchUserProductUnits(user.userID)
-        
+
     //     // setCartItems(JSON.parse(localStorage.cartItems))
     //     // console.log(JSON.parse(localStorage.getItem("cartItems")))
     //   }, []);
 
-    // useEffect(() => {
-    //     fetchUserProductUnits(user.user.userId)
-    
-        
-    //   }, []);
+    useEffect(() => {
+        fetchUserProductUnits(userId)
+
+
+      }, []);
 
     return (
         <div>
@@ -44,7 +53,7 @@ function Cart(props) {
 
                 })
             }
-            
+
         </div>
     )
 }

@@ -24,9 +24,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProductUnits, setUserProductUnits] = useState([])
   const [user, setUser] = useState({})
+  console.log("user state", user)
 
   useEffect(() => {
-    console.log(user);
+    console.log("this is the user state at top of App", user);
   }, [user])
 
   const fetchProducts = async () => {
@@ -92,14 +93,19 @@ function App() {
         const user = await response.json();
         console.log("this is the user info from login", user)
         localStorage.setItem("token", user.token)
+        localStorage.setItem("userId", user.user.userId)
+
         setIsLoggedIn(true)
         setUser(user);
+        
 
       }
     } catch (error) {
       console.error(error);
     }
+    
   }
+  
 
   // const createUser = async (username, password) => {
   //   console.log('This is the createUser func');
@@ -188,13 +194,13 @@ function App() {
   const fetchUserProductUnits = async (userId) => {
     try {
 
-      const response = await fetch(`http://localhost:4000/api/myorders/${user.user.userID}`, {
+      const response = await fetch(`http://localhost:4000/api/myorders/${userId}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json'
         },
         mode: "cors"
-      })
+      });
       console.log("fetchUserProductUnits response" , response)
       const userProductUnits = await response.json();
       console.log('I am the userProductUnits', userProductUnits)
@@ -305,6 +311,7 @@ function App() {
 
       <div className="main">
         <div className="side-bar">
+        {/* <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} /> */}
           <Link className="side-bar-content" to="/">All Records</Link>
           <br></br>
           <Link className="side-bar-content" to="/orders/cart">Cart</Link>
@@ -328,7 +335,7 @@ function App() {
             <Route exact path="/users/login">
               <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} />
             </Route>
-            <Route exact path="/orders/cart">
+            <Route path="/orders/cart">
               <Cart fetchUserProductUnits={fetchUserProductUnits} user={user} userProductUnits={userProductUnits} />
             </Route>
             <Route  >
