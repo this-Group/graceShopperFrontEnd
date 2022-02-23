@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDom from "react-dom";
 // import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { useState } from "react";
@@ -89,7 +89,15 @@ const Register = (props) => {
         console.log("this is the userId", user.user.userId)
         console.log("this is the orderId", user.user.orderId)
 
-    }    
+    
+
+    }
+    
+    useEffect(()=> {
+        console.log("This is the userState", user)
+        console.log("this is the userId", user?.id)
+        console.log("this is the orderId", user?.userId)
+    },[user])
         
     return (
         <div>

@@ -17,6 +17,7 @@ function Cart(props) {
     // const { userId } = useParams();
     // console.log('This is userId from useParams', userId);
 
+
     // useEffect(() => {
     //     fetchUserProductUnits(user.userID)
 
@@ -24,11 +25,13 @@ function Cart(props) {
     //     // console.log(JSON.parse(localStorage.getItem("cartItems")))
     //   }, []);
 
+
     useEffect(() => {
         fetchUserProductUnits(userId)
 
 
       }, []);
+
 
     return (
         <div>
