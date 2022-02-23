@@ -12,6 +12,7 @@ import '../App.css';
 // import GuestCart from './GuestCart';
 import Header from './Header';
 import Main from './Main';
+import { findRenderedComponentWithType } from 'react-dom/cjs/react-dom-test-utils.production.min';
 // import Basket from './Basket';
 
 
@@ -24,6 +25,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProductUnits, setUserProductUnits] = useState([])
   const [user, setUser] = useState({})
+
   console.log("user state", user)
 
   useEffect(() => {
@@ -93,19 +95,18 @@ function App() {
         const user = await response.json();
         console.log("this is the user info from login", user)
         localStorage.setItem("token", user.token)
+
         localStorage.setItem("userId", user.user.userId)
 
         setIsLoggedIn(true)
         setUser(user);
-        
 
       }
     } catch (error) {
       console.error(error);
     }
-    
   }
-  
+
 
   // const createUser = async (username, password) => {
   //   console.log('This is the createUser func');
@@ -156,6 +157,7 @@ function App() {
     })*/
     console.log("this is the response from createUser func", response)
     if (response) {
+
       const user = await response.json();
       console.log("this is the user info from createUser", user)
       localStorage.setItem("token", user.token)
@@ -170,7 +172,7 @@ function App() {
   const addProductToProductUnits = async (orderId, productId, price) => {
     try {
 
-      const response = await fetch('http://localhost:4000/api/productUnits', {
+      const response = await fetch('http://localhost:4000/api/productunits', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
@@ -194,13 +196,17 @@ function App() {
   const fetchUserProductUnits = async (userId) => {
     try {
 
+
       const response = await fetch(`http://localhost:4000/api/myorders/${userId}`, {
+
         method: "GET",
         headers: {
           'Content-Type': 'application/json'
         },
         mode: "cors"
+
       });
+
       console.log("fetchUserProductUnits response" , response)
       const userProductUnits = await response.json();
       console.log('I am the userProductUnits', userProductUnits)
@@ -235,7 +241,18 @@ function App() {
     //   }, [cartItems]
   )
 
-  const onAdd = (product) => {
+  const onAdd = async(product) => {
+
+   let res = await fetch("http://localhost:4000/api/productunits/",{
+      method:"POST",
+      body:{
+
+        orderId:user.userId,
+        productId:product.id,
+        price:product.price,
+      }
+    })
+    console.log(res);
 
     console.log("This is the produnt info in onAdd func", product)
     // if(user){
@@ -281,6 +298,17 @@ function App() {
     }
     ////fetch method to remove to productUnits table, adding orderId, productId, and price
     //or have user remove from the cart view
+
+  };
+
+  const logoutUser = () => {
+    // event.preventDefault();
+    console.log(user);
+    localStorage.clear();
+    setUser(null);
+    setIsLoggedIn(false);
+    
+
   };
 
 
@@ -303,6 +331,8 @@ function App() {
             <Link to="/users/signup">Sign Up</Link>
             <br></br>
             <Link to="/users/login">Login</Link>
+            <Link to="/users/logout" onClick={() => logoutUser()}>Logout</Link>
+                  
 
             {/* <Header></Header> */}
           </div>
@@ -335,7 +365,9 @@ function App() {
             <Route exact path="/users/login">
               <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} />
             </Route>
+
             <Route path="/orders/cart">
+
               <Cart fetchUserProductUnits={fetchUserProductUnits} user={user} userProductUnits={userProductUnits} />
             </Route>
             <Route  >

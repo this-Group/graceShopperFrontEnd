@@ -10,9 +10,8 @@ const locallySourcedToken = localStorage.getItem('token');
 
 
 const Login = (props) => {
+
     const { loginUser, isLoggedIn, user, setUser } = props
-    
-    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,6 +30,46 @@ const Login = (props) => {
         loginUser(username, password)
         setUsername('');
         setPassword('');
+
+// <<<<<<< jerrybranch
+      
+//         // setIsLoggedIn(true)
+//         //question about fetching from our backend
+//     }
+//     useEffect(()=>{
+//         console.log("This is the userState", user)
+//         console.log("this is the userId", user?.id)
+//         console.log("this is the orderId", user?.userId)
+//     },[user])
+        
+
+//         const loginUser = async (username, password) => {
+//             console.log(".........")
+//             try {
+//                 const response = await fetch('http://localhost:4000/api/users/login', {
+//                     method: "POST",
+//                     headers: {
+//                         'Content-Type': 'application/json'
+//                     },
+//                     body: JSON.stringify({
+
+//                         username: username,
+//                         password: password
+
+//                     })
+//                 })
+//                 console.log("this is the response from loginuser", response)
+//                 if (response) {
+//                     const {  token, user  } = await response.json();
+//                     localStorage.setItem("token", token)
+                  
+//                     setUser(user);
+//                 }
+//             } catch (error) {
+//                 console.error(error);
+//             }
+//         }
+// =======
     }
     // useEffect(() =>{
     //     console.log("This is the userState", user)
@@ -91,7 +130,6 @@ const Login = (props) => {
 //                 console.error(error);
 //             }
 //         }
-
         
         // const response = await fetch(createUser {
         //     method: "POST",
@@ -107,8 +145,6 @@ const Login = (props) => {
         // })
 
 
-    
-
     return (
         <div className="loginUserForm">
             <form onSubmit={handleSubmit}>
@@ -123,6 +159,7 @@ const Login = (props) => {
                 </input>
                 <br></br>
                 <div>
+
                     {isLoggedIn ?
                             <h3>Logged in</h3>
                         : ''}
