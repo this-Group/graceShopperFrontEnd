@@ -26,8 +26,10 @@ function App() {
   const [userProductUnits, setUserProductUnits] = useState([])
   const [user, setUser] = useState({})
 
+  console.log("user state", user)
+
   useEffect(() => {
-    console.log(user);
+    console.log("this is the user state at top of App", user);
   }, [user])
 
   const fetchProducts = async () => {
@@ -93,6 +95,9 @@ function App() {
         const user = await response.json();
         console.log("this is the user info from login", user)
         localStorage.setItem("token", user.token)
+
+        localStorage.setItem("userId", user.user.userId)
+
         setIsLoggedIn(true)
         setUser(user);
 
@@ -101,6 +106,7 @@ function App() {
       console.error(error);
     }
   }
+
 
   // const createUser = async (username, password) => {
   //   console.log('This is the createUser func');
@@ -151,11 +157,12 @@ function App() {
     })*/
     console.log("this is the response from createUser func", response)
     if (response) {
-      const{user,token} = await response.json();
+
+      const user = await response.json();
       console.log("this is the user info from createUser", user)
-      localStorage.setItem("token", token)
+      localStorage.setItem("token", user.token)
       setIsLoggedIn(true);
-      setUser(user);
+      setUser(user.user);
 
     }
 
@@ -189,13 +196,17 @@ function App() {
   const fetchUserProductUnits = async (userId) => {
     try {
 
-      const response = await fetch(`http://localhost:4000/api/myorders/${user.user.userID}`, {
+
+      const response = await fetch(`http://localhost:4000/api/myorders/${userId}`, {
+
         method: "GET",
         headers: {
           'Content-Type': 'application/json'
         },
         mode: "cors"
-      })
+
+      });
+
       console.log("fetchUserProductUnits response" , response)
       const userProductUnits = await response.json();
       console.log('I am the userProductUnits', userProductUnits)
@@ -287,6 +298,7 @@ function App() {
     }
     ////fetch method to remove to productUnits table, adding orderId, productId, and price
     //or have user remove from the cart view
+
   };
 
   const logoutUser = () => {
@@ -296,6 +308,7 @@ function App() {
     setUser(null);
     setIsLoggedIn(false);
     
+
   };
 
 
@@ -328,6 +341,7 @@ function App() {
 
       <div className="main">
         <div className="side-bar">
+        {/* <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} /> */}
           <Link className="side-bar-content" to="/">All Records</Link>
           <br></br>
           <Link className="side-bar-content" to="/orders/cart">Cart</Link>
@@ -351,7 +365,9 @@ function App() {
             <Route exact path="/users/login">
               <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} />
             </Route>
-            <Route exact path="/orders/cart">
+
+            <Route path="/orders/cart">
+
               <Cart fetchUserProductUnits={fetchUserProductUnits} user={user} userProductUnits={userProductUnits} />
             </Route>
             <Route  >

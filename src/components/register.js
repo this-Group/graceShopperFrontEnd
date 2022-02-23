@@ -85,6 +85,9 @@ const Register = (props) => {
         console.log("after create user");
         setUsername('');
         setPassword('');
+        console.log("This is the userState", user)
+        console.log("this is the userId", user.user.userId)
+        console.log("this is the orderId", user.user.orderId)
 
     
 
