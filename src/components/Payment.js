@@ -4,22 +4,52 @@ import ReactDom from "react-dom";
 import { useEffect, useState } from "react";
 
 const Payment = (props) => {
-    const {checkOut} = props
-    const [cardNumber, setCardNumber] = useState('')
-    const [cvv, setCvv] = useState('')
-    const orderId = localStorage.getItem("oderId")
+    const { checkout } = props;
+    const orderId = localStorage.getItem("orderId");
+    console.log("orderId on payment", orderId)
+    const [cardNumber, setCardNumber] = useState('');
+    const [cvv, setCvv] = useState('');
+    const [payFeedback, setPayFeedback] = useState("");
+
+
+    const paymentHandler = async (event) => {
+        event.preventDefault();
+
+        if (cardNumber.length === 16 && cvv.length <= 4) {
+            console.log("cardenumber and cvv work")
+            console.log("orderId in payment handler", orderId)
+              checkout(orderId);
+        } else if (!cardNumber) {
+            console.log("no card number")
+            setPayFeedback("Please enter a credit card number");
+        } else if (cardNumber.length !== 16) {
+            console.log("cardenumber length no 16")
+            setPayFeedback("Credit card number must be 16 digits, no spaces");
+        } else if (!cvv.length || cvv.length > 4) {
+            console.log("cvv doesn't work")
+            setPayFeedback("Invalid CVV Code")
+        } else {
+            setPayFeedback("");
+        }
+
+    };
 
     return (
         <div className="paymentForm">
             {/* <form onSubmit={}> */}
             <form>
+
                 <h2>Payment</h2>
                 <br></br><br></br>
+                <label>Name:</label><br></br>
+                <input className="name" text="text" placholder="Enter your name"></input>
+                <br></br>
                 <label>Credit Card</label><br></br>
-                <input className="payment-creditcardnumber" type="text" placeholder="Enter credit card number" value={cardNumber} onChange={(event) => setCardNumber(event.target.value)}></input>
+                <input className="payment-creditcardnumber" type="number" placeholder="Enter credit card number" value={cardNumber} onChange={(event) => setCardNumber(event.target.value)}></input>
                 <br></br>
                 <div className="expirationDate">
                     <label> Expiration </label>
+
                     <br></br>
                     <div>
                         <select id="month" name="month">
@@ -48,9 +78,10 @@ const Payment = (props) => {
                 <br></br>
                 <label>CVV (on back) </label>
                 <br></br>
-                <input type="text" placeholder="---" value={cvv} onChange={(event) => setCvv(event.target.value)}></input>
+                <input type="number" placeholder="---" value={cvv} onChange={(event) => setCvv(event.target.value)}></input>
+                {payFeedback ? <p>{payFeedback}</p> : null}
                 <br></br><br></br>
-                <label>Billing Adress</label><br></br>
+                <label>Billing Adress </label><br></br>
                 <input className="payment-address" type="text" placeholder="Adress Line"></input>
                 <br></br>
                 <label>Adress Line 2</label>
@@ -58,14 +89,10 @@ const Payment = (props) => {
                 <input className="payment-adress" type="text" placeholder="Apartment, suite, building etc."></input>
                 <br></br>
                 <label>ZIP Code</label>
+                <br></br>
+                <input className="payment-zipcode" type="text" placeholder="Zip Code"></input>
                 <br></br><br></br>
-                <button type="submit"
-                onClick={(event) => {
-                    event.preventDefault();
-                    checkOut(orderId, cardNumber, cvv);
-                    setCardNumber("");
-                    setCvv("")
-                }}>Place Order</button>
+                <button onClick={paymentHandler} type="submit">Place Order</button>
 
             </form>
         </div>

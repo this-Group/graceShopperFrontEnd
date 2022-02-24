@@ -189,28 +189,31 @@ function App() {
     }
   }
 
-const checkout = async (orderId, cardNumber, cvv) =>{
+const checkout = async (orderId) =>{
+  console.log("orderId in checkout func", orderId)
+  const processing = "PROCESSING"
   try {
-    //if card info is valid
-      //update current order
-      //create new order
-      //return order processing 
-
-    const response = await fetch(`http://localhost:4000/api/myorders`, {
+    const response = await fetch(`http://localhost:4000/api/myorders/myorders`, {
       method: "PATCH",
-      body: {
+      body: JSON.stringify({
         orderId : orderId,
-        status: "PROCESSING"
+        userId: userId,
+        status: processing
 
-      },
+      }),
       headers: {
         'Content-Type': 'application/json'
       },
       mode: "cors"
     });
     console.log("checkout func response", response)
-    const checkedOutOrder = await response.json();
-    console.log("I am the checkedOutOrder", checkedOutOrder)
+    const newOrder = await response.json();
+    console.log("newOrder after checkout", newOrder)
+    console.log("newOrder Id after checkout", newOrder.id)
+    localStorage.setItem("orderId", newOrder.id)
+
+    console.log("end of checkout")
+
   } catch (error) {
     console.error(error)
   }  
