@@ -189,7 +189,7 @@ function App() {
     }
   }
 
-const checkout = async (creditcardnumber, cvv, orderId) =>{
+const checkout = async (orderId, cardNumber, cvv) =>{
   try {
     //if card info is valid
       //update current order
