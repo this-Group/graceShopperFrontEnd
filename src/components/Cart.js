@@ -32,6 +32,7 @@ function Cart(props) {
 
     return (
         <div>
+            <div>
             <h1>Cart</h1>
             {/* If there are no userProductUnits return no albums in cart */}
             {
@@ -59,8 +60,11 @@ function Cart(props) {
 
                 })
             }
+            </div>
             <br></br>
+            <div>
             <Checkout checkout={checkout}/>
+            </div>
 
         </div>
     )

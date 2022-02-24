@@ -189,7 +189,7 @@ function App() {
     }
   }
 
-const checkout = async () =>{
+const checkout = async (creditcardnumber, cvv, orderId) =>{
   try {
     //if card info is valid
       //update current order
@@ -308,7 +308,7 @@ const checkout = async () =>{
           {/* <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} /> */}
           <Link className="side-bar-content" to="/">All Records</Link>
           <br></br>
-          <Link className="side-bar-content" to="/orders/cart">Cart</Link>
+          <Link className="side-bar-content" to="/orders/cart" >Cart</Link>
         </div>
 
 
