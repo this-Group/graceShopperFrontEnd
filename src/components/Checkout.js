@@ -20,13 +20,6 @@ function CheckoutForm(props) {
             {toggle ?
                 <Payment checkout={checkout} />
                 : ''}
-
-            
-            {/* <button>Submit Order</button> */}
-            {/* on click will start checkout method
-                -verify card lengths
-                /update curent order to PROCESSING
-                /create new order and save orderId */}
         </div >
     )
 

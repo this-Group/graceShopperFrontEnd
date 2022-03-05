@@ -1,7 +1,5 @@
 import React from "react";
-import ReactDom from "react-dom";
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Payment = (props) => {
     const { checkout } = props;
@@ -36,7 +34,6 @@ const Payment = (props) => {
 
     return (
         <div className="paymentForm">
-            {/* <form onSubmit={}> */}
             <form>
 
                 <h2>Payment</h2>

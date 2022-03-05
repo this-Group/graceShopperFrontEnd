@@ -1,22 +1,17 @@
-// import logo from './logo.svg';
 import { useEffect, useState } from 'react';
-import { Route, Link, Switch, Router } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import AllProductsView from './AllProductsView';
 import SingleProductView from './SingleProductView';
 import Register from './Register';
 import Login from './Login'
 import Cart from './Cart'
-import Basket from './Basket';
+import GenreView from './GenreView'
 import '../App.css';
-
-// import GuestCart from './GuestCart';
-import Header from './Header';
-import Main from './Main';
-// import Basket from './Basket';
 
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [genreProducts, setGenreProducts] = useState([]);
   const [cartItems, setCartItems] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProductUnits, setUserProductUnits] = useState([])
@@ -41,6 +36,22 @@ function App() {
       const data = await response.json();
       console.log('I am the data', data)
       setProducts(data);
+
+      return data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const fetchGenreProducts = async (genre) => {
+    try {
+
+      const response = await fetch(`http://localhost:4000/api/products/${genre}`, {
+        mode: "cors"
+      })
+      const data = await response.json();
+      console.log('I am the data from genre fetch', data)
+      setGenreProducts(data);
 
       return data
     } catch (error) {
@@ -98,11 +109,7 @@ function App() {
         password: password
       }),
       mode: "cors",
-    })/*.then (res => res.json()).then( data => {localStorage.setItem('token', data.token);
-            console.log(data)
-        setUser(data.user);
-        
-    })*/
+    })
     console.log("this is the response from createUser func", response)
     if (response) {
       const user = await response.json();
@@ -189,87 +196,61 @@ function App() {
     }
   }
 
-const checkout = async (orderId) =>{
-  console.log("orderId in checkout func", orderId)
-  const processing = "PROCESSING"
-  try {
-    const response = await fetch(`http://localhost:4000/api/myorders/myorders`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        orderId : orderId,
-        userId: userId,
-        status: processing
+  const checkout = async (orderId) => {
+    console.log("orderId in checkout func", orderId)
+    const processing = "PROCESSING"
+    try {
+      const response = await fetch(`http://localhost:4000/api/myorders/myorders`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          orderId: orderId,
+          userId: userId,
+          status: processing
 
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      mode: "cors"
-    });
-    console.log("checkout func response", response)
-    const newOrder = await response.json();
-    console.log("newOrder after checkout", newOrder)
-    console.log("newOrder Id after checkout", newOrder.id)
-    localStorage.setItem("orderId", newOrder.id)
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: "cors"
+      });
+      console.log("checkout func response", response)
+      const newOrder = await response.json();
+      console.log("newOrder after checkout", newOrder)
+      console.log("newOrder Id after checkout", newOrder.id)
+      localStorage.setItem("orderId", newOrder.id)
 
-    console.log("end of checkout")
+      console.log("end of checkout")
 
-  } catch (error) {
-    console.error(error)
-  }  
+    } catch (error) {
+      console.error(error)
+    }
 
-}
-
-  useEffect(() => {
-    fetchProducts()
-    // fetchUserProductUnits(user.user.userID)
-
-    // setCartItems(JSON.parse(localStorage.cartItems))
-    // console.log(JSON.parse(localStorage.getItem("cartItems")))
-  }, []);
-
-
-
-
+  }
 
 
   const onAdd = (product) => {
 
     console.log("This is the product info in onAdd func", product)
-    // if(user){
-
 
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist) {
-
-
-      //post request
       setCartItems(
         cartItems.map((x) =>
           x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
         )
       );
     } else {
-      //post request
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
 
-    //fetch method to add to productUnits table, adding orderId, productId, and price
-    
-    addProductToProductUnits( orderId, product.id, product.price)
+    addProductToProductUnits(orderId, product.id, product.price)
 
-
-
-    // }
   };
 
-  // select product that needs to be removed
-  // in the cartItems search for a product with the product.id  
+
   const onRemove = (product) => {
     const exist = cartItems.find((x) => x.id === product.id);
-    // i need to remove this product
     if (exist.qty === 1) {
-      // if product does not exist cartItems then return
       setCartItems(cartItems.filter((x) => x.id !== product.id));
     } else {
       setCartItems(
@@ -280,6 +261,19 @@ const checkout = async (orderId) =>{
     }
   };
 
+
+  const logoutUser = () => {
+    // event.preventDefault();
+    console.log(user);
+    localStorage.clear();
+    setUser(null);
+    setIsLoggedIn(false);
+
+  };
+
+  useEffect(() => {
+    fetchProducts()
+  }, []);
 
   return (
 
@@ -300,18 +294,27 @@ const checkout = async (orderId) =>{
             <Link to="/users/signup">Sign Up</Link>
             <br></br>
             <Link to="/users/login">Login</Link>
-
-            {/* <Header></Header> */}
+            <br></br>
+            <Link to="/users/logout" onClick={() => logoutUser()}>Logout</Link>
           </div>
         </header>
       </div>
 
       <div className="main">
         <div className="side-bar">
-          {/* <Login loginUser={loginUser} isLoggedIn={isLoggedIn} user={user} setUser={setUser} /> */}
-          <Link className="side-bar-content" to="/">All Records</Link>
+          <div>
+            <Link className="side-bar-content" to="/orders/cart" >Cart</Link>
+            <br></br>
+            <Link className="side-bar-content" to="/">All Records</Link>
+            <br></br>
+          </div>
+          <Link className="side-bar-content" to="/genre/POP">Pop</Link>
           <br></br>
-          <Link className="side-bar-content" to="/orders/cart" >Cart</Link>
+          <Link className="side-bar-content" to="/genre/HIP_HOP">Hip Hop</Link>
+          <br></br>
+          <Link className="side-bar-content" to="/genre/ROCK">Rock</Link>
+          <br></br>
+          <Link className="side-bar-content" to="/genre/COUNTRY">Country</Link>
         </div>
 
 
@@ -323,7 +326,6 @@ const checkout = async (orderId) =>{
               <AllProductsView products={products} />
             </Route>
             <Route exact path="/:id">
-
               <SingleProductView onAdd={onAdd} products={products} onRemove={onRemove} cartItems={cartItems} />
             </Route>
             <Route exact path="/users/signup">
@@ -335,7 +337,8 @@ const checkout = async (orderId) =>{
             <Route path="/orders/cart">
               <Cart fetchUserProductUnits={fetchUserProductUnits} deleteProductUnits={deleteProductUnits} user={user} userProductUnits={userProductUnits} checkout={checkout} />
             </Route>
-            <Route  >
+            <Route exact path="/genre/:genre" >
+              <GenreView onAdd={onAdd} genreProducts={genreProducts} onRemove={onRemove} cartItems={cartItems} fetchGenreProducts={fetchGenreProducts} />
             </Route>
 
           </Switch>

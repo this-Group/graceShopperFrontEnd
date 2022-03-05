@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+
 
 import Checkout from './Checkout'
 
 
 function Cart(props) {
     const { userProductUnits, fetchUserProductUnits, user, deleteProductUnits, checkout } = props
-    // fetchUserProductUnits(userId)
     console.log("this is the userProduct", userProductUnits)
 
     const userId = localStorage.getItem("userId")
@@ -14,19 +13,9 @@ function Cart(props) {
 
     console.log("this is the user from props in Cart", user)
 
-    // const { userId } = useParams();
-    // console.log('This is userId from useParams', userId);
-
-    // useEffect(() => {
-    //     fetchUserProductUnits(user.userID)
-
-    //     // setCartItems(JSON.parse(localStorage.cartItems))
-    //     // console.log(JSON.parse(localStorage.getItem("cartItems")))
-    //   }, []);
 
     useEffect(() => {
         fetchUserProductUnits(userId)
-
 
       }, []);
 
@@ -34,7 +23,6 @@ function Cart(props) {
         <div>
             <div>
             <h1>Cart</h1>
-            {/* If there are no userProductUnits return no albums in cart */}
             {
                 userProductUnits && userProductUnits.length && userProductUnits.map((productUnit) => {
 

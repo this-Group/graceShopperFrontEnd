@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function Basket(props) {
-    const {cartItems, onAdd, onRemove} = props;
+    const {cartItems, onAdd} = props;
     const itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
     
     const shippingPrice = 0;
@@ -10,17 +10,11 @@ export default function Basket(props) {
     return (
       <div>
         
-      {/* <h2>Cart Items</h2> */}
+      
       <div>
-        {/* {cartItems.length === 0 && <div>Cart is empty</div>} */}
         {cartItems.map((item) => (
           <div key={item.id} className="row">
 
-            
-            {/* <img className="album-cover" src={item.picture} alt={item.title}></img> */}
-            {/* <div className="col-2">{item.title} --- {item.artist}</div> */}
-
-            
             <div className="col-2">*Member Price:* ${item.price} x Quantity:{item.qty}</div>
 
 
@@ -32,7 +26,7 @@ export default function Basket(props) {
             </div>
 
             <div className="col-2 text-right">
-              {/* {item.qty} x ${item.price.toFixed(2)} */}
+              
             </div>
           </div>
         ))}

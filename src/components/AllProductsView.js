@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Route, Link, Switch } from 'react-router-dom';
 import ProductCard from './ProductCard';
-// import SingleProductView from './SingleProductView';
 
 
 function AllProductView(props) {
