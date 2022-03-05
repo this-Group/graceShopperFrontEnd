@@ -46,7 +46,7 @@ function App() {
   const fetchGenreProducts = async (genre) => {
     try {
 
-      const response = await fetch(`http://localhost:4000/api/products/${genre}`, {
+      const response = await fetch(`http://localhost:4000/api/products/genre/${genre}`, {
         mode: "cors"
       })
       const data = await response.json();
@@ -271,9 +271,9 @@ function App() {
 
   };
 
-  useEffect(() => {
-    fetchProducts()
-  }, []);
+  // useEffect(() => {
+  //   fetchProducts()
+  // }, []);
 
   return (
 
@@ -323,7 +323,7 @@ function App() {
           <Switch>
 
             <Route exact path="/">
-              <AllProductsView products={products} />
+              <AllProductsView fetchProducts={fetchProducts} products={products} />
             </Route>
             <Route exact path="/:id">
               <SingleProductView onAdd={onAdd} products={products} onRemove={onRemove} cartItems={cartItems} />
