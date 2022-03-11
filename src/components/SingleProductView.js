@@ -1,13 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import Basket from  './Basket'
 
 function SingleProductView(props) {
+
+  console.log('props', props)
  
-  const { products, onAdd, onRemove, cartItems } = props;
+  const { fetchProducts , products, onAdd, onRemove, cartItems } = props;
+
+  useEffect(() => {
+    fetchProducts()
+  }, []);
 
   const { id } = useParams();
   console.log('This is id from useParams', id);
+
+  console.log('This is product from props', products)
 
   let singleProduct = products.find(product => {
     return product.id === parseInt(id)

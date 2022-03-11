@@ -10,6 +10,9 @@ import '../App.css';
 
 
 function App() {
+
+
+  
   const [products, setProducts] = useState([]);
   const [genreProducts, setGenreProducts] = useState([]);
   const [cartItems, setCartItems] = useState([])
@@ -302,12 +305,11 @@ function App() {
 
       <div className="main">
         <div className="side-bar">
-          <div>
-            <Link className="side-bar-content" to="/orders/cart" >Cart</Link>
-            <br></br>
-            <Link className="side-bar-content" to="/">All Records</Link>
-            <br></br>
-          </div>
+
+          <Link className="side-bar-content" to="/orders/cart" >Cart</Link>
+          <br></br>
+          <Link className="side-bar-content" to="/">All Records</Link>
+          <br></br>
           <Link className="side-bar-content" to="/genre/POP">Pop</Link>
           <br></br>
           <Link className="side-bar-content" to="/genre/HIP_HOP">Hip Hop</Link>
@@ -326,7 +328,7 @@ function App() {
               <AllProductsView fetchProducts={fetchProducts} products={products} />
             </Route>
             <Route exact path="/:id">
-              <SingleProductView onAdd={onAdd} products={products} onRemove={onRemove} cartItems={cartItems} />
+              <SingleProductView fetchProducts={fetchProducts} onAdd={onAdd} products={products} onRemove={onRemove} cartItems={cartItems} />
             </Route>
             <Route exact path="/users/signup">
               <Register createUser={createUser} user={user} setUser={setUser} />
